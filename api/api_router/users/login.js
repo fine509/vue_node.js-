@@ -34,7 +34,7 @@ module.exports = async(req, res) => {
                     })
 
                 } else {
-                    return res.status(200).json('密码不正确')
+                    return res.status(404).json('密码不正确')
                 }
             });
         })

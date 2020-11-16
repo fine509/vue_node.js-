@@ -17,7 +17,7 @@ module.exports = AAA = async(req, res) => {
 
                             if (err) throw err
                             newpassword = hash;
-                            console.log('123');
+
                             User.updateOne({ _id: req.params.id }, { password: newpassword }).then(
                                 result => { return res.json('修改成功') }
                             ).catch(err => { return res.status(404).json('修改失败') })

@@ -4,7 +4,9 @@
 
     <div class="index1">
       <left-nav></left-nav>
-      <router-view></router-view>
+     <keep-alive>
+        <router-view></router-view>
+     </keep-alive>
     </div>
   </div>
 </template>

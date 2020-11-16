@@ -9,15 +9,20 @@
         {{ getuser.name }}
         <el-button size="small" @click="modifyname">修改名字</el-button>
         <el-button size="small" @click="modifypassword">修改密码</el-button>
-        <el-input
+         <!-- <el-button size="small" @click="modifybao">修改密保</el-button> -->
+
+
+                <el-input rules='rules'
           v-if="isshow"
           placeholder="请输入修改的名字"
-          class="inputname"
+     class="inputname"
           size="small"
           v-model="modify.name"
         >
         </el-input>
-        <el-input
+
+
+            <el-input
           v-if="passwordshow"
           placeholder="请输入原来的密码"
           type="password"
@@ -25,14 +30,30 @@
           v-model="modify.password"
         >
         </el-input>
-        <el-input
-          v-if="passwordshow"
-          placeholder="请输入修改的密码"
-          type="password"
+
+
+
+            <el-input   v-if="passwordshow" placeholder="输入6-30位的密码" size="small"
+         v-model="modify.password1" show-password @blur="passwordBlur"></el-input>
+
+
+
+           <!-- <el-input
+          v-if="mibaoshow"
+          placeholder="请输入你喜欢的颜色"
+          type="text"
           size="small"
-          v-model="modify.password1"
+          v-model="modify.password"
         >
         </el-input>
+            <el-input   v-if="mibaoshow" placeholder="请输入你喜欢的水果" size="small"
+         v-model="modify.password1" show-password @blur="passwordBlur"></el-input> -->
+
+
+
+
+
+
 
         <el-button
           size="small"
@@ -50,20 +71,23 @@
         >
         <el-row class="rowrow">
           <el-button
+
             size="small"
             @click="passwordSure"
-            v-if="passwordshow"
-            class="suremodify"
+            v-if="passwordBtn"
+            :class='{suremodify:ture, is6:isdisabled}'
+
             >确认修改</el-button
           >
           <el-button
             size="small"
             @click="modifyEnd"
-            v-if="passwordshow"
+            v-if="passwordBtn"
             class="suremodify"
             >取消修改</el-button
           >
         </el-row>
+
       </div>
 
       <div class="usertype">
@@ -82,6 +106,10 @@ export default {
     return {
       isshow: false,
       passwordshow: false,
+      passwordBtn:false,
+
+     isdisabled:true,
+
       modify: {
         name: "",
         password: "",
@@ -98,6 +126,13 @@ export default {
         password1: "",
       },
       getuser: {},
+    //   rules: {
+
+    //     password: [
+    //       { required: true, message: "密码不能为空", trigger: "blur" },
+    //       { min: 6, max: 30, message: "长度在6-30之间", trigger: "blur" },
+    //     ],
+    //   },
     };
   },
   created() {
@@ -110,9 +145,12 @@ export default {
     },
   },
   methods: {
+
     modifyname() {
       this.isshow = true;
       this.passwordshow = false;
+      this. passwordBtn=false;
+
     },
     modifySure() {
       this.isshow = false;
@@ -147,10 +185,15 @@ export default {
     modifyEnd() {
       this.isshow = false;
       this.passwordshow = false;
+      this. passwordBtn=false;
     },
     modifypassword() {
       this.passwordshow = true;
+      this. passwordBtn=true;
       this.isshow = false;
+
+
+
     },
     passwordSure() {
       this.dataName = this.modify;
@@ -167,11 +210,29 @@ export default {
           });
           this.modify = this.modify1;
           this.passwordshow = false;
+          this.passwordBtn = false;
         })
         .catch((err) => {
           console.log(err);
         });
     },
+    passwordBlur(){
+        if(this.modify.password1.length<6 || this.modify.password1.length>30){
+
+             this.isdisabled=true
+             this.$message({
+               type:'warning',
+               message:'密码必须在6-30位以内'
+
+             })
+        }
+        else {
+            this.passwordBtn=true;
+
+            this.isdisabled=false
+
+        }
+    }
   },
 };
 </script>
@@ -231,6 +292,13 @@ export default {
 .profile .rowrow {
   text-align: right;
   margin-top: 10px;
-  margin-left: 480px !important;
+  margin-left: 494px !important;
+}
+.profile .is6{
+ /* cursor: not-allowed; */
+/* //设置蒙版效果k */
+    opacity:0.5;
+/* //禁止鼠标事件 */
+  pointer-events:none;
 }
 </style>

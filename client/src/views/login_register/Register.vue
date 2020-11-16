@@ -1,5 +1,8 @@
 <template>
   <div class="register">
+     <video id="v1" autoplay muted loop> 
+        <source src="~assets/video/222.mp4" type="video/mp4"  />
+  </video>
     <section class="from-contain">
       <div class="form-tip">
         <span class="title"> 小林资金后台管理系统 </span>
@@ -19,7 +22,7 @@
             ></el-input>
           </el-form-item>
           <el-form-item label="邮箱" prop="email">
-            <el-input
+            <el-input 
               v-model="registerUser.email"
               placeholder="请输入邮箱"
             ></el-input>
@@ -38,6 +41,7 @@
               placeholder="确认密码"
             ></el-input>
           </el-form-item>
+          
           <el-form-item label="选择身份" class="identity">
             <el-select
               v-model="registerUser.identity"
@@ -93,6 +97,8 @@ export default {
         password2: "",
         password3: "",
         identity: "",
+        color:'',
+        fruit:''
       },
       loading: true,
       //验证规则
@@ -103,10 +109,11 @@ export default {
         ],
         email: [
           {
-            type: "email",
+            type:'email',
             required: true,
             message: "邮箱格式不正确",
             trigger: "blur",
+           
           },
         ],
         password: [
@@ -168,8 +175,7 @@ export default {
   position: relative;
   width: 100%;
   height: 100%;
-  background: url("~assets/img/bg.jpg") no-repeat center 80%;
-  background-size: 100% 120%;
+ 
 }
 .register .from-contain {
   width: 370px;
@@ -190,7 +196,8 @@ export default {
   width: 100%;
   margin-top: 20px;
 
-  background-color: #fff;
+  background-color: rgba(238, 234, 234, .2);
+  border-radius: 5%;
   padding-right: 10px;
   padding-top: 20px;
 }
@@ -211,4 +218,37 @@ export default {
   color: #999;
   font-size: 12px;
 }
+ * {
+            margin: 0px;
+            padding: 0px;
+        }
+        
+        html,
+        body {
+            width: 100%;
+            height: 100%
+        }
+        
+        video {
+            position: fixed;
+            top: 0%;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+            object-fit: fill;
+            /*加滤镜*/
+            /* filter: blur(115px); 
+            
+           -webkit-filter: grayscale(100%);
+            filter:grayscale(50%);  */
+            /* //背景灰度设置*/ 
+            z-index: -11
+        }
+        
+        source {
+            min-width: 100%;
+            min-height: 100%;
+            height: auto;
+            width: auto;
+        }
 </style>

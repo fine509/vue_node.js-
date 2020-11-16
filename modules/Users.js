@@ -28,8 +28,15 @@ const UserSchema = new mongoose.Schema({
     date: {
         type: Date,
         default: Date.now
+    },
+    color: {
+        type: String,
+        default: ''
+    },
+    fruit: {
+        type: String,
+        default: ''
     }
-
 
 })
 

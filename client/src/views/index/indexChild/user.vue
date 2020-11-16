@@ -12,7 +12,7 @@
         >
           <template slot-scope="scope">
             <i class="el-icon-time"></i>
-            <span style="margin-left: 10px">{{ scope.row.date }}</span>
+            <span style="margin-left: 10px">{{ dateTurn(scope.row.date) }}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" prop="name" label="名字" width="140">
@@ -88,6 +88,9 @@ export default {
         this.getusers();
       });
     },
+      dateTurn(date){
+      return new Date(date).toLocaleString()
+    }
   },
 };
 </script>

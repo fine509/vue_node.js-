@@ -47,7 +47,7 @@ careated(){
   },
   methods:{
       setUserInfo(item){
-         if(item==='info'){this.$router.push('/profile')}
+         if(item==='info'){this.$router.push('/index/profile')}
       
          if(item==='logout') this.logout()                
       },
@@ -102,11 +102,6 @@ careated(){
   height: 100%;
   vertical-align: middle;
 }
-.logojpg .title {
-  margin-top: 10px;
-  color: #fff;
-  font-size: 20px;
-}
 
 .userinfo {
   text-align: center;
@@ -150,4 +145,24 @@ margin-bottom: 10px;
      bottom: 10px;
      right: -14px;
   }
+
+
+  .logojpg .title {
+  margin-top: 10px;
+  
+  font-size: 20px;
+   background:-webkit-linear-gradient(left,#8c9ca0,#535353 25%,#8c9ca0 50%,#535353 75%,#8c9ca0);
+            color:transparent;
+            -webkit-background-clip:text;
+            background-size:200% 100%;
+            animation:masked-animation 1s infinite linear;
+}
+ @-webkit-keyframes masked-animation {
+            0% {
+                background-position:0 0;
+            }
+            100% {
+                background-position:-100% 0;
+            }
+        }
 </style>

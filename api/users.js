@@ -18,6 +18,8 @@ const all = require('./api_router/users/all')
 const deleteUser = require('./api_router/users/deleteUser')
 const editUser = require('./api_router/users/editUser')
 const editPassword = require('./api_router/users/editPassword')
+const editMibao = require('./api_router/users/editMibao')
+const findpw = require('./api_router/users/findpw')
     //设置二级路由 
 
 //POST api/users/register Pubblic
@@ -26,6 +28,9 @@ users.post("/register", register)
 
 //POST api/users/login 返回token jwt password Pubblic
 users.post('/login', login)
+
+///POST api/users/edit/:id 通过密保修改密码
+users.post('/find', findpw)
 
 //GET api/users/current 返回用户信息  Private(私有接口用passpost验证)
 users.get('/current/:id', passpost.authenticate('jwt', { session: false }), current)
@@ -36,10 +41,15 @@ users.get('/all', passpost.authenticate('jwt', { session: false }), all)
 ///GET api/users/current 删除单个用户
 users.delete('/delete/:id', passpost.authenticate('jwt', { session: false }), deleteUser)
 
-///GET api/users/edit/:id 修改用户名字
+///POST api/users/edit/:id 修改用户名字
 users.post('/edit/:id', passpost.authenticate('jwt', { session: false }), editUser)
 
-///GET api/users/edit/:id 修改用户名字
+///POST api/users/edit/:id 修改用户名字
 users.post('/editpassword/:id', passpost.authenticate('jwt', { session: false }), editPassword)
+
+///POST api/users/edit/:id 修改用户密保
+users.post('/editmibao/:id', passpost.authenticate('jwt', { session: false }), editMibao)
+
+
 
 module.exports = users;

@@ -1,0 +1,49 @@
+/* pages/movie/movie.wxss */
+.movie {
+  height: 300rpx;
+  display: flex;
+  padding: 10px;
+  border-bottom: 1px solid #999;
+}
+
+.movieImg {
+  width: 200rpx;
+  height: 90%;
+  margin: 5px;
+}
+
+.movie_info {
+  flex: 1;
+  width: 500rpx;
+  color: rgb(100, 100, 100);
+}
+.movieTitle {
+  font-size: 40rpx;
+  color: rgb(37, 37, 37);
+  font-weight: bolder;
+}
+.movieScore {
+  color: green;
+}
+
+.movieComment {
+  white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+}
+.actors {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.Comments {
+  float: right;
+
+    font-size: 20px;
+    color: #fff;
+    background-color: red;
+    font-weight: bolder;
+}
+.HoverComments {
+  color: rgb(119, 117, 117);
+}

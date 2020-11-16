@@ -35,16 +35,25 @@ export default {
     name:'LeftNav',
     data(){
         return {
-          items:[{icon:'fa-money',name:'资金管理',path:'fund',
+          items:[{icon:'fa-money',name:'个人资金',path:'fund',
           children:[
               {
-                  path:'/fundlist',name:'资金流水'
+                  path:'/index/fundlist',name:'资金管理'
               }
               ]}
           ,{icon:'fa-message',name:'信息管理',path:'message',children:[{
-              path:'/profile',
+              path:'/index/profile',
               name:'个人信息'
+          },{
+              path:'/index/mibao',
+              name:'修改密保'
           }]},
+          {
+              icon:'fa-count',name:'资金总览',path:'count',children:[{
+                  path:'/index/cashcount',
+                  name:'资金总览'
+              }]
+          }
           ]
         }
     },
@@ -52,14 +61,17 @@ export default {
         let items;
         const manager={icon:'fa-user',name:'用户管理',path:'user',children:[
               {
-                  path:'/user',
+                  path:'/index/user',
                   name:'用户管理'
               }
           ]}
+       
+          
          
           //身份验证，输入不同数据
+       
         this.getuser.identity==='manager'?this.items.push(manager):this.items
-        
+   
     },
 
     computed:{

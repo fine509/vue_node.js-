@@ -3,41 +3,16 @@
     <div>
       <el-form :inline="true" ref="add_data" :model="searchData">
         <!-- 查询 -->
-        <el-form-item label="按照时间查询" class="search">
-          <el-date-picker
-            v-model="searchData.startTime"
-            type="datetime"
-            placeholder="选择开始时间时间"
-          >
-          </el-date-picker>
-          --
-          <el-date-picker
-            v-model="searchData.endTime"
-            type="datetime"
-            placeholder="选择结束时间时间"
-          >
-          </el-date-picker>
-          <el-form-item>
-            <el-button
-              class="searchbtn"
-              type="primary"
-              size="small"
-              icon="search"
-              @click="handsearch()"
-              >查询</el-button
-            >
-          </el-form-item>
-        </el-form-item>
 
         <el-form-item class="btnright">
           <el-button type="primary" size="small" icon="view" @click="handleadd"
             >添加</el-button
           >
         </el-form-item>
-        <add :add="add" @getfiles="getfile" :formData="formData"></add>
+        <add :add="add" @editfiles='getfile' @getfiles="getfile" :formData="formData"></add>
       </el-form>
     </div>
-
+<!-- / 表格 -->
     <div class="container">
       <el-table
         :data="tableData"
@@ -54,7 +29,9 @@
         >
           <template slot-scope="scope">
             <i class="el-icon-time"></i>
-            <span style="margin-left: 10px">{{ scope.row.date }}</span>
+            <span style="margin-left: 10px">{{
+              dateTurn(scope.row.date)
+            }}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" prop="type" label="类型" width="100">
@@ -76,7 +53,7 @@
             <span style="color: #00d053">{{ scope.row.expend }}</span>
           </template>
         </el-table-column>
-        <el-table-column align="center" prop="cash" label="现金" width="90">
+        <el-table-column align="center" prop="cash" label="资金情况" width="90">
           <template slot-scope="scope">
             <span style="color: blue">{{ scope.row.cash }}</span>
           </template>
@@ -105,7 +82,7 @@
       </el-table>
 
       <!-- 分页 -->
-      <el-row>
+      <el-row v-if="tableData.length > 0">
         <el-col :span="24">
           <div class="paginations">
             <el-pagination
@@ -171,12 +148,14 @@ export default {
   components: {
     Add,
   },
-  created() {
-    this.getfile();
+ 
+  activated(){
+    this.getfile()
   },
   methods: {
+     //发送网络请求到后台/api/profile获取所有数据 //设置分页数据
     getfile() {
-      //发送网络请求到后台/api/profile获取所有数据
+  
       this.$axios
         .get("/api/profile/" + this.$store.getters.user.id)
         .then((res) => {
@@ -184,19 +163,19 @@ export default {
             this.allTableData = res.data;
             this.filterData = res.data;
           }
-          //设置分页数据
+          
           this.setpaginations();
         })
         .catch((err) => console.log(err));
     },
 
-    //设置分页的方法
+    //设置分页的方法   //分页属性     //设置默认的分页数据
     setpaginations() {
-      //分页属性
+    
       this.paginations.total = this.allTableData.length;
       this.paginations.pageindex = 1;
       this.paginations.pagesize = 5;
-      //设置默认的分页数据
+  
       this.tableData = this.allTableData.filter((item, index) => {
         return index < this.paginations.pagesize;
       });
@@ -219,6 +198,7 @@ export default {
         pid: row._id,
       };
     },
+    //删除数据
     delete1(row) {
       this.$axios.delete("/api/profile/delete/" + row._id).then((res) => {
         this.$message({
@@ -246,17 +226,17 @@ export default {
           pid: "",
         });
     },
-    //实现分页功能
+    //实现分页功能 //切换size
     handleSizeChange(page_size) {
-      //切换size
+      
       this.paginations.pageindex = 1;
       this.paginations.pagesize = page_size;
       this.tableData = this.allTableData.filter((item, index) => {
         return index < page_size;
       });
     },
+    //实现换页功能
     handleCurrentChange(page) {
-      //实现换页功能
       this.paginations.pageindex = page;
 
       this.tableData = this.allTableData.filter((item, index) => {
@@ -266,22 +246,9 @@ export default {
         );
       });
     },
-    //查询
-    handsearch() {
-      if (!this.searchData.startTime || !this.searchData.endTime) {
-        this.$message({
-          type: "warning",
-          message: "请选择时间",
-        });
-      }
-      const sTime = this.searchData.startTime.getTime();
-      const eTime = this.searchData.endTime.getTime();
-      this.allTableData = this.filterData.filter((item, index) => {
-        const time = new Date(item.date).getTime();
-        return time > sTime && time < eTime;
-      });
-      //重新设置分页数据
-      this.setpaginations();
+
+    dateTurn(date) {
+      return new Date(date).toLocaleString();
     },
   },
 };

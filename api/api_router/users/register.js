@@ -17,7 +17,9 @@ module.exports = async(req, res) => {
                     email: req.body.email,
                     avatar,
                     password: req.body.password,
-                    identity: req.body.identity
+                    identity: req.body.identity,
+                    color: req.body.color,
+                    fruit: req.body.fruit
                 })
                 console.log(newUser);
 

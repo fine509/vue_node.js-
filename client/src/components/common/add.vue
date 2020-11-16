@@ -8,7 +8,7 @@
 <div class="form">
       <el-form ref="addform" :model='formData' :rules='rules'  label-width='120px'
       style="margin=10px;width=auto">
-        <el-form-item label='收支类型'>
+        <el-form-item label='收支类型' prop='intype'>
             <el-select v-model=" formData.type" placeholder="收支类型">
                 <el-option  v-for="(item,index) in  formtype" :key="index" 
                 :label='item' 
@@ -16,19 +16,17 @@
             </el-select>
         </el-form-item>
       <el-form-item prop='describe' label='收支描述：'>
-            <el-input v-model="formData.describe" type='describe'></el-input>
+            <el-input v-model="formData.describe" type='text'></el-input>
       </el-form-item>
          <el-form-item prop='incode' label='收入：'>
-            <el-input v-model="formData.incode" type='incode'></el-input>
+            <el-input v-model="formData.incode" type='number'></el-input>
       </el-form-item>
          <el-form-item prop='expend' label='支出：'>
-            <el-input v-model="formData.expend" type='expend'></el-input>
+            <el-input v-model="formData.expend" type='number'></el-input>
       </el-form-item>
-         <el-form-item prop='cash' label='账户现金：'>
-            <el-input v-model="formData.cash" type='cash'></el-input>
-      </el-form-item>
+    
        <el-form-item prop='remark' label='备注：'>
-            <el-input v-model="formData.remark  " type='remark'></el-input>
+            <el-input v-model="formData.remark  " type='text'></el-input>
       </el-form-item>
       </el-form>
 
@@ -53,14 +51,14 @@ export default {
     data() {
       return {
         
-         formtype:['吃喝','娱乐','学习','工作','日常','医药'],
+         formtype:['娱乐','日常','医药','工资','其他','股票'],
          rules:{
             
-             incode:{
+             incode:[{
                    required:true,
                  message:'收入不能为空',
                  trigger:'blur'
-             },
+             }],
              expend:{
                    required:true,
                  message:'支出不能为空',
@@ -97,7 +95,8 @@ export default {
                       //判断是添加还是编辑
                       if(this.add.option==='add')
                             {
-                             
+                           //现金由系统计算
+                             this.formData.cash=(this.formData.incode-0)-(this.formData.expend)
                               this.$axios.post('/api/profile/add', qs.stringify(this.formData))
                          .then(res=>{
                          //成功
@@ -109,6 +108,7 @@ export default {
                               this.$emit('getfiles')
                                  })};
                       if(this.add.option==='edit'){
+                         this.formData.cash=(this.formData.incode-0)-(this.formData.expend)
                         this.$axios.post('/api/profile/edit/'+this.formData.pid,qs.stringify(this.formData))
                         .then(res=>{
                            this.$message({
@@ -116,7 +116,7 @@ export default {
                               type: 'success'
                             });
                               this.add.show=false ;
-                              this.$emit('getfiles')
+                              this.$emit('editfiles')
                         })
                       }
                        }

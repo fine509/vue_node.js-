@@ -10,6 +10,9 @@ import Profile from 'views/index/indexChild/profile.vue'
 import Fundlist from 'views/index/indexChild/fundlist.vue'
 import User from 'views/index/indexChild/user.vue'
 import Summation from 'views/index/indexChild/summation.vue'
+import CashCount from 'views/index/indexChild/cashCount.vue'
+import MiBao from 'views/index/indexChild/MiBao.vue'
+import Findpassword from 'views/login_register/Findpassword.vue'
 Vue.use(Router)
 
 const routes = [{
@@ -24,18 +27,24 @@ const routes = [{
             path: 'home',
             component: Home
         }, {
-            path: '/profile',
+            path: 'profile',
             component: Profile
 
         }, {
-            path: '/fundlist',
+            path: 'fundlist',
             component: Fundlist
         }, {
-            path: '/user',
+            path: 'user',
             component: User
         }, {
-            path: '/summation',
+            path: 'summation',
             component: Summation
+        }, {
+            path: 'cashcount',
+            component: CashCount
+        }, {
+            path: 'mibao',
+            component: MiBao
         }]
     },
     {
@@ -44,8 +53,14 @@ const routes = [{
     },
     {
         path: '/login',
-        component: Login
+        component: Login,
+        children: []
     },
+    {
+        path: '/find',
+        component: Findpassword
+    },
+
 
     //出错
     {
@@ -64,10 +79,11 @@ const router = new Router({
 //路由守卫 判断是否存在token,若存在则表示已经登录过了
 router.beforeEach((to, from, next) => {
     const hastoken = localStorage.logintoken ? true : false;
-    if (to.path.includes('/login') || to.path.includes('/register')) { next() } else hastoken ? next() : next('/login')
+    if (to.path.includes('/login') || to.path.includes('/register') || to.path.includes('/find')) { next() } else hastoken ? next() : next('/login')
     if ((to.path.includes('/login') || to.path.includes('/register')) && hastoken) {
         next('/index')
     }
+
 })
 
 export default router
