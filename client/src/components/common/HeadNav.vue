@@ -3,7 +3,7 @@
     <div class="left">
       <div class="logojpg">
         <img src="~assets/img/logo.gif" alt="" />
-        <span class="title">小林资金管理系统</span>
+        <span class="title">资金管理系统</span>
       </div>
     </div>
     <div class="right">
@@ -78,7 +78,7 @@ careated(){
 <style scoped>
 .headnav {
   width: 100%;
-  height: 60px;
+  height: 70px;
   min-width: 600px;
   padding: 5px;
   padding-left:0px;

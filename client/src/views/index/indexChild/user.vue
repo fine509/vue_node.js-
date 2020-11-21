@@ -2,7 +2,7 @@
   <div class="user">
     <div class="container">
       <el-table :data="userData" style="width: 100%" v-if="userData.length > 0">
-        <el-table-column align="center" type="index" label="序号" width="80">
+        <el-table-column align="center" type="index" label="序号" width="60">
         </el-table-column>
         <el-table-column
           align="center"
@@ -41,7 +41,7 @@
         <el-table-column
           align="center"
           label="操作"
-          width="190"
+          width="180"
           prop="operation"
         >
           <template slot-scope="scope">

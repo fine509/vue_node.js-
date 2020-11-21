@@ -4,8 +4,8 @@
       <div class="leftimg"><img :src="getuser.avatar" alt="" /></div>
     </div>
     <div class="right">
-      <div class="username">
-        <span class="iconfont">&#xe616;</span>
+      <div class="username" style="font-size:1.6rem">
+       <i class="el-icon-user-solid"></i>
         {{ getuser.name }}
         <el-button size="small" @click="modifyname">修改名字</el-button>
         <el-button size="small" @click="modifypassword">修改密码</el-button>
@@ -35,23 +35,6 @@
 
             <el-input   v-if="passwordshow" placeholder="输入6-30位的密码" size="small"
          v-model="modify.password1" show-password @blur="passwordBlur"></el-input>
-
-
-
-           <!-- <el-input
-          v-if="mibaoshow"
-          placeholder="请输入你喜欢的颜色"
-          type="text"
-          size="small"
-          v-model="modify.password"
-        >
-        </el-input>
-            <el-input   v-if="mibaoshow" placeholder="请输入你喜欢的水果" size="small"
-         v-model="modify.password1" show-password @blur="passwordBlur"></el-input> -->
-
-
-
-
 
 
 
@@ -90,8 +73,8 @@
 
       </div>
 
-      <div class="usertype">
-        <span class="iconfont">&#xe627;</span>
+      <div class="usertype" style="font-size:1.6rem">
+        <i class="el-icon-s-tools"></i>
         {{ ismanager }}
       </div>
     </div>
@@ -275,13 +258,7 @@ export default {
   transform: translateY(-40%);
 }
 
-.profile .iconfont {
-  font-family: "iconfont" !important;
-  font-size: 16px;
-  font-style: normal;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+
 .inputname {
   display: inline-block !important;
 }
@@ -300,5 +277,8 @@ export default {
     opacity:0.5;
 /* //禁止鼠标事件 */
   pointer-events:none;
+}
+.profile i {
+  font-size: 2rem;
 }
 </style>

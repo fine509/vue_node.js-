@@ -1,11 +1,9 @@
 <template>
   <div class="register">
-     <video id="v1" autoplay muted loop> 
-        <source src="~assets/video/222.mp4" type="video/mp4"  />
-  </video>
+    
     <section class="from-contain">
       <div class="form-tip">
-        <span class="title"> 小林资金后台管理系统 </span>
+        <span class="title"> 资金后台管理系统 </span>
         <!-- element组件 -->
         <el-form
           :model="registerUser"
@@ -22,7 +20,7 @@
             ></el-input>
           </el-form-item>
           <el-form-item label="邮箱" prop="email">
-            <el-input 
+            <el-input
               v-model="registerUser.email"
               placeholder="请输入邮箱"
             ></el-input>
@@ -41,7 +39,7 @@
               placeholder="确认密码"
             ></el-input>
           </el-form-item>
-          
+
           <el-form-item label="选择身份" class="identity">
             <el-select
               v-model="registerUser.identity"
@@ -51,7 +49,7 @@
               <el-option label="用户" value="employee"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="身份验证" prop="password3">
+          <el-form-item class="yanzheng" label="身份验证" prop="password3">
             <el-input
               type="password"
               v-model="registerUser.password3"
@@ -62,14 +60,18 @@
           <el-form-item class="submit">
             <el-button
               type="primary"
-              class="submitbtn"
+              class="btn2"
               @click="submitForm('registerForm')"
               >注册</el-button
             >
+             <el-button
+              type="primary"
+              class="btn2"
+              @click="login"
+              >登录</el-button
+            >
           </el-form-item>
-          <div class="login_tip">
-            <p>已有账号，返回<router-link to="/login">登录</router-link></p>
-          </div>
+         
         </el-form>
       </div>
     </section>
@@ -97,8 +99,8 @@ export default {
         password2: "",
         password3: "",
         identity: "",
-        color:'',
-        fruit:''
+        color: "",
+        fruit: "",
       },
       loading: true,
       //验证规则
@@ -109,11 +111,10 @@ export default {
         ],
         email: [
           {
-            type:'email',
+            type: "email",
             required: true,
             message: "邮箱格式不正确",
             trigger: "blur",
-           
           },
         ],
         password: [
@@ -166,6 +167,9 @@ export default {
         }
       });
     },
+    login(){
+      this.$router.push('/login')
+    }
   },
 };
 </script>
@@ -175,80 +179,55 @@ export default {
   position: relative;
   width: 100%;
   height: 100%;
- 
+   background-color: rgb(211, 211, 211);
 }
 .register .from-contain {
-  width: 370px;
+  width: 420px;
   height: 210px;
   position: absolute;
-  top: 30%;
-  left: 15%;
-  transform: translate(-30%, -60%);
+  top: 23%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 .register .from-contain .title {
   font-weight: bold;
   font-size: 26px;
-  color: rgb(238, 234, 234);
-  margin-left: 50px;
+  color:rgb(100, 99, 99);
+  margin-left: 106px;
+  
 }
-
+.register .el-form-item {
+  margin-bottom: 18px!important;
+}
 .register .registerForm {
   width: 100%;
   margin-top: 20px;
 
-  background-color: rgba(238, 234, 234, .2);
-  border-radius: 5%;
+     background-color: rgb(245, 247, 247);
+   border-radius: 3%;
   padding-right: 10px;
   padding-top: 20px;
 }
 .register input {
-  width: 250px;
+  width: 300px;
 }
-.register .submitbtn {
-  width: 98%;
-  margin-top: -20px;
-  margin-bottom: 10px;
-  margin-left: -30px;
-}
+
 .register .login_tip {
   margin-left: 220px;
   margin-top: -20px;
   padding-bottom: 20px;
 
-  color: #999;
+  color: #fff;
   font-size: 12px;
 }
- * {
-            margin: 0px;
-            padding: 0px;
-        }
-        
-        html,
-        body {
-            width: 100%;
-            height: 100%
-        }
-        
-        video {
-            position: fixed;
-            top: 0%;
-            left: 0px;
-            width: 100%;
-            height: 100%;
-            object-fit: fill;
-            /*加滤镜*/
-            /* filter: blur(115px); 
-            
-           -webkit-filter: grayscale(100%);
-            filter:grayscale(50%);  */
-            /* //背景灰度设置*/ 
-            z-index: -11
-        }
-        
-        source {
-            min-width: 100%;
-            min-height: 100%;
-            height: auto;
-            width: auto;
-        }
+
+.register .btn2 {
+  margin-bottom: 1rem;
+}
+.register .yanzheng {
+  margin-bottom: 10px!important ;
+}
+
+
+
 </style>
