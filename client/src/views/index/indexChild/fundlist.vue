@@ -1,8 +1,8 @@
 <template>
   <div class="fundlist">
     <div>
-      <el-form :inline="true" ref="add_data" :model="searchData">
-        <!-- 查询 -->
+      <el-form :inline="true" ref="add_data" >
+   
 
         <el-form-item class="btnright">
           <el-button type="primary" size="small" icon="view" @click="handleadd"
@@ -58,7 +58,7 @@
             <span style="color: blue">{{ scope.row.cash }}</span>
           </template>
         </el-table-column>
-        <el-table-column align="center" prop="remark" label="备注" width="120">
+        <el-table-column align="center" prop="remark" label="备注" width="80">
         </el-table-column>
         <el-table-column
           align="center"
@@ -137,10 +137,7 @@ export default {
       //全部的数据数组
       allTableData: {},
       //查询时间的时间数据
-      searchData: {
-        startTime: "",
-        endTime: "",
-      },
+     
       //用于过滤的数据数组
       filterData: {},
     };
@@ -266,7 +263,7 @@ export default {
   margin: 10px 30px 5px 0 !important;
 }
 .fundlist .container .el-table {
-  height: 300px;
+  height: 305px;
   overflow: auto;
 }
 .fundlist .paginations {

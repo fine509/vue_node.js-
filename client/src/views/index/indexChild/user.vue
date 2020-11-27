@@ -15,12 +15,12 @@
             <span style="margin-left: 10px">{{ dateTurn(scope.row.date) }}</span>
           </template>
         </el-table-column>
-        <el-table-column align="center" prop="name" label="名字" width="140">
+        <el-table-column align="center" prop="name" label="名字" width="130">
         </el-table-column>
         <el-table-column align="center" prop="email" label="邮箱" width="150">
         </el-table-column>
 
-        <el-table-column align="center" prop="_id" label="ID" width="190">
+        <el-table-column align="center" prop="_id" label="ID" width="200">
           <template slot-scope="scope">
             <span style="color: #00d053">{{ scope.row._id }}</span>
           </template>

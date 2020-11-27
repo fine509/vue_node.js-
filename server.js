@@ -14,11 +14,11 @@ const app = express(); //创建服务器
 
 //引入路由
 const users = require('./api/users')
-const list = require('./api/list');
+
 const profile = require('./api/profile')
-
-
-//body-parser中间件拦截post参数
+const owe = require('./api/owe')
+const borrow = require('./api/borrow')
+    //body-parser中间件拦截post参数
 app.use(bodyParser.urlencoded({ extended: false }))
 
 
@@ -35,11 +35,12 @@ require('./config/passport')(passpost)
 //设置路由  
 //设置中间件处理匹配请求
 app.use('/api/users', users)
-app.use('/api/list', list)
+
 app.use('/api/profile', profile)
 
-
-//端口号
+app.use('/api/owe', owe)
+app.use('/api/borrow', borrow)
+    //端口号
 const port = process.env.PORT || 5000;
 //监听
 app.listen(port, () => {

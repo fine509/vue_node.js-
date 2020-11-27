@@ -17,9 +17,8 @@
             placeholder="选择结束时间时间"
           >
           </el-date-picker>
-         
         </el-form-item>
-       
+
         <el-form-item>
           <div class="typeChoose">
             <span class="title">按照类型查询</span>
@@ -42,7 +41,7 @@
             >
           </div>
         </el-form-item>
-         <add :add="add" @editfiles="editfile" :formData="formData"></add>
+        <add :add="add" @editfiles="editfile" :formData="formData"></add>
       </el-form>
       <!-- 按照类型 -->
     </div>
@@ -91,7 +90,7 @@
             <span style="color: blue">{{ scope.row.cash }}</span>
           </template>
         </el-table-column>
-        <el-table-column align="center" prop="remark" label="备注" width="120">
+        <el-table-column align="center" prop="remark" label="备注" width="100">
         </el-table-column>
         <el-table-column
           align="center"
@@ -132,10 +131,10 @@
         </el-col>
       </el-row>
     </div>
-    <div class="count_income" v-if="count[0]">
+    <div class="count_income" v-if="count.length">
       <div>总收入：{{ count[0] }}</div>
-      <div>总支出：{{ count[1]}}</div>
-      <div>合计：{{  count[2] }}</div>
+      <div>总支出：{{ count[1] }}</div>
+      <div>合计：{{ count[2] }}</div>
     </div>
   </div>
 </template>
@@ -209,21 +208,22 @@ export default {
   components: {
     Add,
   },
- 
+
   //判断每次出去进来后有没有新增数据
   activated() {
-     this.getfile();
+    this.getfile();
   },
- 
+
   methods: {
     //一开始
-    creatGet(){
-       this.$axios
+    creatGet() {
+      this.$axios
         .get("/api/profile/" + this.$store.getters.user.id)
         .then((res) => {
           if (res) {
             this.allTableData = res.data;
-            this.filterData = res.data;         
+            this.filterData = res.data;
+            this.setpaginations()
           }
         })
         .catch((err) => console.log(err));
@@ -236,13 +236,8 @@ export default {
           if (res) {
             this.allTableData = res.data;
             this.filterData = res.data;
-          
-        
-              this.typesearch();
-          
-           
-          
-           
+
+            this.typesearch();
           }
         })
         .catch((err) => console.log(err));
@@ -250,15 +245,17 @@ export default {
 
     //设置分页的方法
     setpaginations() {
-   
       //分页属性
       this.paginations.total = this.allTableData.length;
       this.paginations.pageindex = 1;
       this.paginations.pagesize = 5;
       //设置默认的分页数据
-      this.tableData =this.allTableData.length>0? this.allTableData.filter((item, index) => {
-        return index < this.paginations.pagesize;
-      }):{};
+      this.tableData =
+        this.allTableData.length > 0
+          ? this.allTableData.filter((item, index) => {
+              return index < this.paginations.pagesize;
+            })
+          : {};
     },
     //实现编辑
     edit(row) {
@@ -277,7 +274,6 @@ export default {
         id: "",
         pid: row._id,
       };
-    
     },
     delete1(row) {
       this.$axios.delete("/api/profile/delete/" + row._id).then((res) => {
@@ -286,7 +282,7 @@ export default {
           type: "success",
         });
         //判断当前删除是时间查询还是类型查询
-        this.getfile()
+        this.getfile();
       });
     },
 
@@ -325,7 +321,7 @@ export default {
     //   });
 
     //   this.sum(this.allTableData);
-     
+
     //   //刷新类型查询内容
     //   this.value = "";
     //   //重新设置分页数据
@@ -341,13 +337,11 @@ export default {
         expend += value.expend - 0;
         cash += value.cash - 0;
       });
-      this.count[0]=incode;
-      this.count[1]=expend;
-      this.count[2]=cash;
-      
+      this.count[0] = incode;
+      this.count[1] = expend;
+      this.count[2] = cash;
     },
-   
-  
+
     //日期转化
     dateTurn(date) {
       return new Date(date).toLocaleString();
@@ -355,42 +349,44 @@ export default {
 
     //查询
     typesearch() {
-      if (!this.searchData.startTime && !this.searchData.endTime&& !this.value) {
+      if (
+        !this.searchData.startTime &&
+        !this.searchData.endTime &&
+        !this.value
+      ) {
         this.$message({
           type: "warning",
           message: "请选择时间或者类型",
         });
-        this.allTableData={};
-        this.count=[];
+          this.creatGet();
+        
+      } else {
+        const sTime = this.searchData.startTime
+          ? this.searchData.startTime.getTime()
+          : 0;
+        const eTime = this.searchData.endTime
+          ? this.searchData.endTime.getTime()
+          : Math.pow(2, 53);
+
+        this.allTableData = this.filterData.filter((item, index) => {
+          const time = new Date(item.date).getTime();
+          if (this.value)
+            return time > sTime && time < eTime && item.type == this.value;
+          else {
+            return time > sTime && time < eTime;
+          }
+        });
+
+        this.sum(this.allTableData);
+
         //重新设置分页数据
-      this.setpaginations();
-     
+        this.setpaginations();
       }
-    
-      else {
-        const sTime = this.searchData.startTime?this.searchData.startTime.getTime():0;
-      const eTime = this.searchData.endTime? this.searchData.endTime.getTime():Math.pow(2, 53);
-     
-      this.allTableData = this.filterData.filter((item, index) => {
-        const time = new Date(item.date).getTime();
-        if(this.value)return time > sTime && time < eTime && item.type == this.value;
-        else {return time > sTime && time < eTime}
-      });
-
-      this.sum(this.allTableData);
-     
-      
-      //重新设置分页数据
-      this.setpaginations();
-      }
-
-     
-     
     },
     //编辑成功后修改
-   editfile(){
-     this.getfile()
-   }
+    editfile() {
+      this.getfile();
+    },
   },
 };
 </script>

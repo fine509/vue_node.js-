@@ -13,6 +13,9 @@ import Summation from 'views/index/indexChild/summation.vue'
 import CashCount from 'views/index/indexChild/cashCount.vue'
 import MiBao from 'views/index/indexChild/MiBao.vue'
 import Findpassword from 'views/login_register/Findpassword.vue'
+import Owe from 'views/index/indexChild/owe.vue'
+import Borrow from 'views/index/indexChild/borrow.vue'
+
 Vue.use(Router)
 
 const routes = [{
@@ -45,6 +48,12 @@ const routes = [{
         }, {
             path: 'mibao',
             component: MiBao
+        }, {
+            path: 'owe',
+            component: Owe
+        }, {
+            path: 'Borrow',
+            component: Borrow
         }]
     },
     {
@@ -69,6 +78,7 @@ const routes = [{
     }
 ]
 
+//创建router实例
 const router = new Router({
     routes,
     mode: 'history',

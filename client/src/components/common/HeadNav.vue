@@ -6,6 +6,7 @@
         <span class="title">资金管理系统</span>
       </div>
     </div>
+    <computed class="computed"></computed>
     <div class="right">
       <div class="userinfo">
         <img
@@ -35,8 +36,10 @@
 </template>
 
 <script>
+import Computed from 'components/common/computed'
 export default {
   name: "HeadNav",
+  components:{Computed},
   data(){
     return {
       getuser:this.$store.getters.user
@@ -145,7 +148,11 @@ margin-bottom: 10px;
      bottom: 10px;
      right: -14px;
   }
-
+.headnav .computed{
+  position: absolute;
+  top: 2.5rem;
+  right: 15rem;
+}
 
   .logojpg .title {
   margin-top: 10px;

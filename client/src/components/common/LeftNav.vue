@@ -2,8 +2,8 @@
 <div class="leftnav">
     <el-row class="tac" style="z-index:9">
         <el-col >
-            <el-menu default-active="2" class="el-menu-vertical-demo"
-            background-color="#151517" text-color="#fff" active-text-color="#314067">
+            <el-menu default-active="1" class="el-menu-vertical-demo"
+            background-color="#151517" text-color="#fff" active-text-color="#fff">
             
             <router-link to="/index/home">
                 <el-menu-item>  <i class="el-icon-menu"></i><span>首页</span></el-menu-item>
@@ -41,19 +41,36 @@ export default {
                   path:'/index/fundlist',name:'资金管理'
               }
               ]}
-          ,{icon:'fa-message',name:'信息管理',path:'message',children:[{
+          ,
+          {
+              icon:'fa-count',name:'资金概括',path:'count',children:[{
+                  path:'/index/cashcount',
+                  name:'资金查询'
+              },
+              {
+                  path:'/index/cashcount',
+                  name:'资金总览'
+              }
+              ]
+          },
+            {
+              icon:'fa-card',name:'借钱管理',path:'borrow',children:[{
+                  path:'/index/borrow',
+                  name:'借钱本'
+              }]
+          },{
+              icon:'fa-card',name:'欠债管理',path:'owe',children:[{
+                  path:'/index/owe',
+                  name:'欠债本'
+              }]
+          },{icon:'fa-message',name:'个人信息',path:'message',children:[{
               path:'/index/profile',
-              name:'个人信息'
+              name:'信息管理'
           },{
               path:'/index/mibao',
               name:'修改密保'
-          }]},
-          {
-              icon:'fa-count',name:'资金总览',path:'count',children:[{
-                  path:'/index/cashcount',
-                  name:'资金总览'
-              }]
-          }
+          }]}
+         
           ]
         }
     },
@@ -90,12 +107,6 @@ export default {
     background-color:#151517;
 }
 
-.leftnav .logologo {
-    width: 100px;
-    height: 100px;
-}
-.logologo img {
-    width: 100%;
-    height: 100%;
-}
+
+
 </style>
