@@ -1,4 +1,1 @@
-hello world
-![image](https://github.com/fine509/vue_node.js-/blob/master/client/src/assets/img/1605015756.jpg)
-![image](https://github.com/fine509/vue_node.js-/blob/master/client/src/assets/img/1605015785.jpg    )
-![image](https://github.com/fine509/vue_node.js-/blob/master/client/src/assets/img/1605015813.jpg)
+资金管理系统。先在外层npm install 再去client npm install ,再返回外层npm run dev 即可运行。如果没有MongoDB可能会报错。

@@ -89,7 +89,8 @@ const router = new Router({
 //路由守卫 判断是否存在token,若存在则表示已经登录过了
 router.beforeEach((to, from, next) => {
     const hastoken = localStorage.logintoken ? true : false;
-    if (to.path.includes('/login') || to.path.includes('/register') || to.path.includes('/find')) { next() } else hastoken ? next() : next('/login')
+    if (to.path.includes('/login') || to.path.includes('/register') ||
+        to.path.includes('/find')) { next() } else hastoken ? next() : next('/login')
     if ((to.path.includes('/login') || to.path.includes('/register')) && hastoken) {
         next('/index')
     }
