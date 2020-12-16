@@ -48,8 +48,8 @@ export default {
                   name:'资金查询'
               },
               {
-                  path:'/index/cashcount',
-                  name:'资金总览'
+                  path:'/index/analyse',
+                  name:'数据分析'
               }
               ]
           },
@@ -105,6 +105,7 @@ export default {
     height: 100%;
     width:15%;
     background-color:#151517;
+    overflow: auto;
 }
 
 

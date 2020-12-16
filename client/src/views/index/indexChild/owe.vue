@@ -31,7 +31,7 @@
       <el-button class="add" size="mini" type="primary" @click="add"
         >添加</el-button
       >
-      <boadd :form="form" :add="isadd" @addSuccess="getinfo"></boadd>
+      <boadd :form="form" :add="isadd" @addSuccess="addsuccess"></boadd>
     </header>
 
     <div class="contain">
@@ -117,11 +117,11 @@ export default {
   },
 
   methods: {
-    getinfo() {
-      this.$axios
+   async getinfo() {
+      await this.$axios
         .get(`/api/owe/findall/${this.$store.getters.user.id}`)
         .then((res) => {
-          console.log(res);
+          console.log('1');
 
           this.alls = res.data;
           this.pages.total = this.alls.length;
@@ -160,12 +160,16 @@ export default {
     remove(item) {
       this.$axios
         .delete(`/api/owe/delete/${item._id}`)
-        .then((res) => {
-          this.getinfo()
+        .then( async(res) => {
+          await this.getinfo()
+         this.handPageCheck()
           this.$message({type:'success',message:'删除成功'})
         });
     },
-
+ async addsuccess(){
+   await this.getinfo();
+   this.handPageCheck(); 
+  },
     handleEdit(index, row) {
       console.log(index, row);
     },
@@ -188,7 +192,11 @@ export default {
           this.getinfo()
       }
       else {
-      const sTime = this.searchData.startTime?this.searchData.startTime.getTime():0;
+        this.handPageCheck()
+      } 
+    },
+    handPageCheck(){
+        const sTime = this.searchData.startTime?this.searchData.startTime.getTime():0;
       const eTime = this.searchData.endTime? this.searchData.endTime.getTime():Math.pow(2, 53);
       this.filters = this.alls.filter((item, index) => {
         const time = new Date(item.date).getTime();
@@ -200,9 +208,8 @@ export default {
       for(let item of this.filters){
         this.count+=(item.cash-0)
       }
-     
-      } 
-    },
+      console.log('2');
+    }
   },
 };
 </script>

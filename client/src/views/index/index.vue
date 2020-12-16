@@ -1,7 +1,8 @@
 <template>
   <div class="index">
+        <keep-alive>
     <head-nav> </head-nav>
-
+      </keep-alive>
     <div class="index1">
       <left-nav></left-nav>
      <keep-alive>

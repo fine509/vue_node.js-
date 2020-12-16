@@ -15,7 +15,7 @@ import MiBao from 'views/index/indexChild/MiBao.vue'
 import Findpassword from 'views/login_register/Findpassword.vue'
 import Owe from 'views/index/indexChild/owe.vue'
 import Borrow from 'views/index/indexChild/borrow.vue'
-
+import Analyse from 'views/index/indexChild/analyse.vue'
 Vue.use(Router)
 
 const routes = [{
@@ -24,13 +24,16 @@ const routes = [{
     },
     {
         path: '/index',
+        name: 'index',
         redirect: '/index/home',
         component: Index,
         children: [{
             path: 'home',
+            name: 'home',
             component: Home
         }, {
             path: 'profile',
+            name: 'profile',
             component: Profile
 
         }, {
@@ -38,6 +41,7 @@ const routes = [{
             component: Fundlist
         }, {
             path: 'user',
+
             component: User
         }, {
             path: 'summation',
@@ -54,6 +58,9 @@ const routes = [{
         }, {
             path: 'Borrow',
             component: Borrow
+        }, {
+            path: 'analyse',
+            component: Analyse
         }]
     },
     {

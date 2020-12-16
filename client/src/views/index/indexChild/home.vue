@@ -32,8 +32,8 @@ export default {
   width: 85%;
   height: 100%;
   margin-left: 15%;
-
-  background-position: 100% 100%;
+  background: url('~assets/img/homebg.jpg');
+  background-size: 100% 100%;
 }
 
 

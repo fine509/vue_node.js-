@@ -1,16 +1,15 @@
 const express = require('express'); //引入express框架
 const mongoose = require('mongoose') //引入mongoose
 const bodyParser = require('body-parser')
-
 const passpost = require('passport')
-
+const app = express(); //创建服务器
 
 
 require('./modules/index') //引入数据库模块文件 连接数据库
 const User = require('./modules/Users') //集合规则
 
 
-const app = express(); //创建服务器
+
 
 //引入路由
 const users = require('./api/users')

@@ -1,34 +1,29 @@
 <template>
   <header class="headnav">
     <div class="left">
-      <div class="logojpg">
-        <img src="~assets/img/logo.gif" alt="" />
-        <span class="title">资金管理系统</span>
+        <div class="logojpg">
+          <img src="~assets/img/logo.gif" alt="" />
+          <span class="title">资金管理系统</span>
+        </div>
       </div>
-    </div>
-    <computed class="computed"></computed>
     <div class="right">
       <div class="userinfo">
-        <img
-          :src="getuser.avatar"
-          alt=""
-        />
+        <img :src="getuser.avatar" alt="" />
         <div class="welcome">
           <div>欢迎</div>
           <div>{{getuser.name}}</div>
         </div>
         <!-- //下拉箭头 -->
         <span class="username"> 
-            <el-dropdown  trigger='click' @command='setUserInfo'>
-  <span class="el-dropdown-link clickmore">
-    <i class="el-icon-arrow-down el-icon--right"></i>
-  </span>
-  <el-dropdown-menu slot="dropdown" >
-    <el-dropdown-item command='info'>个人信息</el-dropdown-item>
-    <el-dropdown-item command='logout'>退出</el-dropdown-item>
- 
-  </el-dropdown-menu>
-</el-dropdown>
+       <el-dropdown  trigger='click' @command='setUserInfo'>
+        <span class="el-dropdown-link clickmore">
+        <i class="el-icon-arrow-down el-icon--right"></i>
+        </span>
+        <el-dropdown-menu slot="dropdown" >
+          <el-dropdown-item command='info'>个人信息</el-dropdown-item>
+          <el-dropdown-item command='logout'>退出</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
         </span>
       </div>
     </div>
@@ -36,18 +31,18 @@
 </template>
 
 <script>
-import Computed from 'components/common/computed'
+
 export default {
   name: "HeadNav",
-  components:{Computed},
+ 
   data(){
     return {
       getuser:this.$store.getters.user
     }
   },
-careated(){
-  this.getuserr()
-  },
+  created() {
+    this.getuserr()
+ },
   methods:{
       setUserInfo(item){
          if(item==='info'){this.$router.push('/index/profile')}
@@ -63,12 +58,14 @@ careated(){
        getuserr(){
         this.$axios.get('/api/users/current/'+this.$store.getters.user.id)
             .then(res=>{
+           
                 this.getuser=res.data
                
             })
        }
   },
-  mounted(){
+    mounted(){
+    //修改名字
     this.$bus.$on('nameModify',res=>{
       
       this.getuserr()

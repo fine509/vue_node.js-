@@ -7,5 +7,8 @@ export default {
     set_User(state, user) {
         if (user) state.user = user;
         else state.user = {}
+    },
+    modify_User(state, value) {
+        if (value) state.user.name = value
     }
 }

@@ -29,7 +29,7 @@
     
       </div>
       <el-button class="add" size="mini" type="primary" @click="add">添加</el-button>
-      <boadd :form="form" :add="isadd" @addSuccess="getinfo"></boadd>
+      <boadd :form="form" :add="isadd" @addSuccess="addsuccess"></boadd>
     </header>
 
     <div class="contain">
@@ -115,15 +115,16 @@ export default {
   },
 
   methods: {
-    getinfo() {
-      this.$axios
+
+   async getinfo() {
+     await this.$axios
         .get(`/api/borrow/findall/${this.$store.getters.user.id}`)
         .then((res) => {
-         
-
+          console.log('1');
+      
           this.alls = res.data;
           this.pages.total = this.alls.length;
-    
+         
           this.handlePage();
            this.count=0;
          for(let item of this.filters){
@@ -132,35 +133,47 @@ export default {
         });
     },
     add() {
-      (this.isadd = {
+      this.isadd = {
         show: true,
         methods: "add",
         title: "增加",
         type: "borrow",
-      }),
-        (this.form = {});
+      },
+      this.form = {};
     },
     edit(item) {
-      (this.isadd = {
+      this.isadd = {
         show: true,
         methods: "edit",
         title: "修改",
         type: "borrow",
-      }),
-        (this.form = {
+      },
+        this.form = {
           cash: item.cash,
           name: item.name,
           pid: item._id,
           desc:item.desc
-        });
+        };
     },
-    remove(item) {
+   remove(item) {
       this.$axios
         .delete(`/api/borrow/delete/${item._id}`)
-        .then((res) => {
-          this.getinfo();  this.$message({type:'success',message:'删除成功'})
+        .then( async(res) => {
+          
+          await this.getinfo();
+         this.handPageCheck(); 
+         this.$message({type:'success',message:'删除成功'})
+
+          
+         
+         
+         
         });
     },
+ async addsuccess(){
+   await this.getinfo();
+   this.handPageCheck(); 
+  },
 
     handleEdit(index, row) {
       console.log(index, row);
@@ -176,6 +189,7 @@ export default {
     },
       //查询
     typeSearch() {
+     
       if (!this.searchData.startTime && !this.searchData.endTime&& !this.value) {
         this.$message({
           type: "warning",
@@ -184,21 +198,28 @@ export default {
         this.getinfo()
       }
       else {
-      const sTime = this.searchData.startTime?this.searchData.startTime.getTime():0;
+        this.handPageCheck()
+    
+     
+      } 
+    },
+    handPageCheck(){
+        const sTime = this.searchData.startTime?this.searchData.startTime.getTime():0;
       const eTime = this.searchData.endTime? this.searchData.endTime.getTime():Math.pow(2, 53);
-      this.filters = this.alls.filter((item, index) => {
+  
+     this.filters = this.alls.filter((item, index) => {
         const time = new Date(item.date).getTime();
         if(this.value)return time > sTime && time < eTime && item.name.includes(this.value);
         else {return time > sTime && time < eTime}
       });
+     
       this.pages.total=this.filters.length;
         this.count=0;
          for(let item of this.filters){
         this.count+=(item.cash-0)
       }
-     
-      } 
-    },
+       console.log('2');
+    }
   },
 };
 </script>

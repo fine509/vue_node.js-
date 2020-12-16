@@ -137,9 +137,7 @@ export default {
     },
     modifySure() {
       this.isshow = false;
-
       this.dataName = this.modify;
-
       //通过用户id修改名字
       this.$axios
         .post(
@@ -156,13 +154,16 @@ export default {
       //修改成功重新获取数据，将数据赋给getuser重新渲染
       this.getuserr();
       //通过事件总线通知HeadNav去修改名字
+   
       this.$bus.$emit("nameModify");
     },
     getuserr() {
       this.$axios
         .get("/api/users/current/" + this.$store.getters.user.id)
         .then((res) => {
+         
           this.getuser = res.data;
+          this.$store.commit('modify_User',res.data.name)
         });
     },
     modifyEnd() {
@@ -223,12 +224,13 @@ export default {
 <style  scoped>
 .profile {
   width: 100%;
-  height: 100%;
+  height:100%;
+
 }
 
 .profile .left {
   float: left;
-  width: 25%;
+  width: 20%;
   height: 100%;
 }
 .profile .left .leftimg {
@@ -245,7 +247,7 @@ export default {
   width: 60%;
   height: 100%;
   background-color: #ecebec;
-  margin-top: 1px;
+
 }
 .profile .right div {
   width: 200px;
@@ -253,7 +255,7 @@ export default {
   margin-left: 20px;
 }
 .profile .right .username {
-  width: 100%;
+  width: 90%;
   margin-top: 32%;
   transform: translateY(-40%);
 }
