@@ -26,7 +26,28 @@
           </el-form-item>
             <el-button class="searchBtn" size="mini" type="primary" @click='typeSearch'>查询</el-button>
         </el-form>
-    
+        <el-form :inline="true" ref="add_data" >
+        <el-form-item class="btnleft">
+          <el-button type="primary" size="small" icon="view" @click="transformType('人民币')"
+            >人民币</el-button
+          >
+        </el-form-item>
+        <el-form-item class="btnleft">
+          <el-button type="primary" size="small" icon="view" @click="transformType('美元')"
+            >美元</el-button
+          >
+        </el-form-item>
+        <el-form-item class="btnleft">
+          <el-button type="primary" size="small" icon="view" @click="transformType('欧元')"
+            >欧元</el-button
+          >
+        </el-form-item>
+        <el-form-item class="btnleft">
+          <el-button type="primary" size="small" icon="view" @click="selectAll"
+            >查看全部</el-button
+          >
+        </el-form-item>
+      </el-form>
       </div>
       <el-button class="add" size="mini" type="primary" @click="add">添加</el-button>
       <boadd :form="form" :add="isadd" @addSuccess="addsuccess"></boadd>
@@ -58,7 +79,7 @@
             </div>
           </template>
         </el-table-column>
-         <el-table-column label="备注" align="center" width="150">
+         <el-table-column label="货币类型" align="center" width="150">
           <template slot-scope="scope">
             <span>{{scope.row.desc}}</span>
           </template>
@@ -75,11 +96,7 @@
     </div>
     <page class="pages" :pages="pages"  @handleSizeChange='handleSizeChange' 
   @handleCurrentChange='handleCurrentChange'></page>
-   <div class="count_income" v-if="count">
-      <div>您借出去的金钱是</div>
-      <div>{{ count}}</div>
-
-    </div>
+   
   </div>
 </template>
 
@@ -107,7 +124,8 @@ export default {
         name: "",
         cash: "",
       },
-      value:''
+      value:'',
+      alls1:[]
     };
   },
   created() {
@@ -123,6 +141,7 @@ export default {
           console.log('1');
       
           this.alls = res.data;
+          this.alls1 = res.data
           this.pages.total = this.alls.length;
          
           this.handlePage();
@@ -159,15 +178,9 @@ export default {
       this.$axios
         .delete(`/api/borrow/delete/${item._id}`)
         .then( async(res) => {
-          
           await this.getinfo();
          this.handPageCheck(); 
          this.$message({type:'success',message:'删除成功'})
-
-          
-         
-         
-         
         });
     },
  async addsuccess(){
@@ -212,13 +225,22 @@ export default {
         if(this.value)return time > sTime && time < eTime && item.name.includes(this.value);
         else {return time > sTime && time < eTime}
       });
-     
+      this.alls1 = this.filters
       this.pages.total=this.filters.length;
         this.count=0;
          for(let item of this.filters){
         this.count+=(item.cash-0)
       }
-       console.log('2');
+    },
+       //判断显示什么货币类型
+      async transformType(type){
+      let all = this.alls1
+      this.alls = all.filter(item=>{return item.desc === type})
+      this.handlePage();
+    },
+    selectAll(){
+     this.alls = this.alls1
+      this.handlePage();
     }
   },
 };
@@ -231,7 +253,10 @@ export default {
   height: 100%;
   /* //box-sizing: border-box; */
 }
-
+.borrow .btnleft {
+  padding: 10px 5px 0px 15px !important;
+  margin-bottom: -10px;
+}
 .borrow .contain {
   width: 100%;
   height: 329px;

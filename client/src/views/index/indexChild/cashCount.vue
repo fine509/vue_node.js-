@@ -1,5 +1,5 @@
 <template>
-  <div class="fundlist">
+  <div class="cashcount">
     <div>
       <el-form :inline="true" ref="add_data" :model="searchData">
         <!-- 查询 -->
@@ -43,6 +43,28 @@
         </el-form-item>
         <add :add="add" @editfiles="editfile" :formData="formData"></add>
       </el-form>
+      <el-form :inline="true" ref="add_data" >
+        <el-form-item class="btnleft">
+          <el-button type="primary" size="small" icon="view" @click="transformType('人民币')"
+            >人民币</el-button
+          >
+        </el-form-item>
+        <el-form-item class="btnleft">
+          <el-button type="primary" size="small" icon="view" @click="transformType('美元')"
+            >美元</el-button
+          >
+        </el-form-item>
+        <el-form-item class="btnleft">
+          <el-button type="primary" size="small" icon="view" @click="transformType('欧元')"
+            >欧元</el-button
+          >
+        </el-form-item>
+        <el-form-item class="btnleft">
+          <el-button type="primary" size="small" icon="view" @click="selectAll"
+            >查看全部</el-button
+          >
+        </el-form-item>
+      </el-form>
       <!-- 按照类型 -->
     </div>
     <div class="container">
@@ -57,7 +79,7 @@
           align="center"
           prop="date"
           label="创建时间"
-          width="230"
+          width="200"
         >
           <template slot-scope="scope">
             <i class="el-icon-time"></i>
@@ -66,7 +88,7 @@
             }}</span>
           </template>
         </el-table-column>
-        <el-table-column align="center" prop="type" label="类型" width="100">
+        <el-table-column align="center" prop="type" label="类型" width="80">
         </el-table-column>
         <el-table-column
           align="center"
@@ -75,7 +97,7 @@
           width="120"
         >
         </el-table-column>
-        <el-table-column align="center" label="收入" width="90">
+        <el-table-column align="center" label="收入" width="80">
           <template slot-scope="scope">
             <span style="color: red">{{ scope.row.incode }}</span>
           </template>
@@ -131,11 +153,7 @@
         </el-col>
       </el-row>
     </div>
-    <div class="count_income" v-if="count.length">
-      <div>总收入：{{ count[0] }}</div>
-      <div>总支出：{{ count[1] }}</div>
-      <div>合计：{{ count[2] }}</div>
-    </div>
+   
   </div>
 </template>
 
@@ -172,7 +190,8 @@ export default {
         pid: "",
       },
       //全部的数据数组
-      allTableData: {},
+      allTableData: [],
+      allTableData1:[],
       //查询时间的时间数据
       searchData: {
         startTime: "",
@@ -235,6 +254,7 @@ export default {
         .then((res) => {
           if (res) {
             this.allTableData = res.data;
+            this.allTableData1 = this.allTableData;
             this.filterData = res.data;
 
             this.typesearch();
@@ -376,7 +396,7 @@ export default {
             return time > sTime && time < eTime;
           }
         });
-
+        this.allTableData1 = this.allTableData;
         this.sum(this.allTableData);
 
         //重新设置分页数据
@@ -387,39 +407,53 @@ export default {
     editfile() {
       this.getfile();
     },
+    //判断显示什么货币类型
+      async transformType(type){
+      let all = this.allTableData1
+      this.allTableData = all.filter(item=>{return item.remark === type})
+      this.setpaginations()
+    },
+    selectAll(){
+     this.allTableData = this.allTableData1
+      this.setpaginations()
+    }
   },
 };
 </script>
 
 <style scoped>
-.fundlist {
+.cashcount {
   width: 85%;
   margin-left: 15%;
   height: 100%;
   /* //box-sizing: border-box; */
 }
-.fundlist .btnright {
+.cashcount .btnright {
   float: right;
   margin: 10px 30px 5px 0 !important;
 }
-.fundlist .container .el-table {
-  height: 300px;
+.cashcount .btnleft {
+  padding: 0px 5px 0px 15px !important;
+  margin-top: -10px;
+}
+.cashcount .container .el-table {
+  height: 320px;
   overflow: auto;
 }
-.fundlist .paginations {
+.cashcount .paginations {
   text-align: right;
   margin-right: 10px;
   margin-top: 10px;
 }
-.fundlist .search {
+.cashcount .search {
   margin-top: 15px;
   margin-bottom: 5px !important;
 }
 
-.fundlist .searchbtn {
+.cashcount .searchbtn {
   margin-left: 10px;
 }
-.fundlist .typeChoose {
+.cashcount .typeChoose {
   font-size: 14px;
   color: #606266;
   margin-top: 15px;

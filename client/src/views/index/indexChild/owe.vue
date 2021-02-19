@@ -26,6 +26,28 @@
           </el-form-item>
           <el-button class="searchBtn" size="mini" type="primary" @click='typeSearch'>查询</el-button>
         </el-form>
+         <el-form :inline="true" ref="add_data" >
+        <el-form-item class="btnleft">
+          <el-button type="primary" size="small" icon="view" @click="transformType('人民币')"
+            >人民币</el-button
+          >
+        </el-form-item>
+        <el-form-item class="btnleft">
+          <el-button type="primary" size="small" icon="view" @click="transformType('美元')"
+            >美元</el-button
+          >
+        </el-form-item>
+        <el-form-item class="btnleft">
+          <el-button type="primary" size="small" icon="view" @click="transformType('欧元')"
+            >欧元</el-button
+          >
+        </el-form-item>
+        <el-form-item class="btnleft">
+          <el-button type="primary" size="small" icon="view" @click="selectAll"
+            >查看全部</el-button
+          >
+        </el-form-item>
+      </el-form>
         <!-- 按照类型 -->
       </div>
       <el-button class="add" size="mini" type="primary" @click="add"
@@ -60,7 +82,7 @@
             </div>
           </template>
         </el-table-column>
-         <el-table-column label="备注" align="center" width="150">
+         <el-table-column label="货币类型" align="center" width="150">
           <template slot-scope="scope">
             <span>{{scope.row.desc}}</span>
           </template>
@@ -77,11 +99,7 @@
     </div>
     <page class="pages" :pages="pages"  @handleSizeChange='handleSizeChange' 
   @handleCurrentChange='handleCurrentChange'></page>
-  <div class="count_income" v-if="count">
-      <div>您的欠债情况是</div>
-      <div>{{ count}}</div>
-
-    </div>
+  
   </div>
 </template>
 
@@ -109,7 +127,8 @@ export default {
         name: "",
         cash: "",
       },
-      value:''
+      value:'',
+      alls1:[]
     };
   },
   created() {
@@ -121,12 +140,9 @@ export default {
       await this.$axios
         .get(`/api/owe/findall/${this.$store.getters.user.id}`)
         .then((res) => {
-          console.log('1');
-
           this.alls = res.data;
+          this.alls1 = res.data
           this.pages.total = this.alls.length;
-          console.log(this.pages);
-          console.log(this.alls.length);
           this.handlePage();
           this.count=0;
          for(let item of this.filters){
@@ -203,13 +219,24 @@ export default {
         if(this.value)return time > sTime && time < eTime && item.name.includes(this.value);
         else {return time > sTime && time < eTime}
       });
+      this.alls1 = this.filters
       this.pages.total=this.filters.length;
        this.count=0;
       for(let item of this.filters){
         this.count+=(item.cash-0)
       }
-      console.log('2');
+    },
+     //判断显示什么货币类型
+      async transformType(type){
+      let all = this.alls1
+      this.alls = all.filter(item=>{return item.desc === type})
+      this.handlePage();
+    },
+    selectAll(){
+     this.alls = this.alls1
+      this.handlePage();
     }
+    
   },
 };
 </script>
@@ -231,6 +258,10 @@ export default {
 .owe .add {
   float: right;
   margin: 2.5rem 10rem 0 0;
+}
+.owe .btnleft {
+  padding: 10px 5px 0px 15px !important;
+  margin-bottom: -10px;
 }
 .owe .search {
   margin: 1rem 0 0 2rem;

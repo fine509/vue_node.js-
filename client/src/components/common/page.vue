@@ -38,6 +38,6 @@ export default {
 
 }
 .page .block .el-pagination {
-  height: 100px;
+  height: 30px;
 }
 </style>

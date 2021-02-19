@@ -8,8 +8,12 @@
     <el-form-item label="金额" :label-width="formLabelWidth">
         <el-input v-model="form.cash" autocomplete="off" type="number"></el-input>
     </el-form-item>
-     <el-form-item label="备注" :label-width="formLabelWidth">
-        <el-input v-model="form.desc" autocomplete="off" type="text"></el-input>
+     <el-form-item label="货币类型" label-width="70px">
+        <el-select v-model="form.desc" placeholder="货币类型">
+                <el-option  v-for="(item,index) in  moneyType" :key="index" 
+                :label='item' 
+                :value='item'>{{item}} </el-option>
+            </el-select>
     </el-form-item>
   </el-form>
   <div slot="footer" class="dialog-footer">
@@ -26,6 +30,7 @@ export default {
     name:'Boadd',
     data(){
         return {
+           moneyType:["人民币","美元","欧元"],
             dialogFormVisible: false,
              formLabelWidth: '50px',
                uid:this.$store.getters.user.id

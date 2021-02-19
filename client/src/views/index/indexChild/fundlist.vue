@@ -2,13 +2,32 @@
   <div class="fundlist">
     <div>
       <el-form :inline="true" ref="add_data" >
-   
-
+         <el-form-item class="btnleft">
+          <el-button type="primary" size="small" icon="view" @click="transformType('人民币')"
+            >人民币</el-button
+          >
+        </el-form-item>
+        <el-form-item class="btnleft">
+          <el-button type="primary" size="small" icon="view" @click="transformType('美元')"
+            >美元</el-button
+          >
+        </el-form-item>
+        <el-form-item class="btnleft">
+          <el-button type="primary" size="small" icon="view" @click="transformType('欧元')"
+            >欧元</el-button
+          >
+        </el-form-item>
+        <el-form-item class="btnleft">
+          <el-button type="primary" size="small" icon="view" @click="getfile"
+            >查看全部</el-button
+          >
+        </el-form-item>
         <el-form-item class="btnright">
           <el-button type="primary" size="small" icon="view" @click="handleadd"
             >添加</el-button
           >
         </el-form-item>
+        
         <add :add="add" @editfiles='getfile' @getfiles="getfile" :formData="formData"></add>
       </el-form>
     </div>
@@ -25,7 +44,7 @@
           align="center"
           prop="date"
           label="创建时间"
-          width="230"
+          width="200"
         >
           <template slot-scope="scope">
             <i class="el-icon-time"></i>
@@ -34,7 +53,7 @@
             }}</span>
           </template>
         </el-table-column>
-        <el-table-column align="center" prop="type" label="类型" width="100">
+        <el-table-column align="center" prop="type" label="类型" width="90">
         </el-table-column>
         <el-table-column
           align="center"
@@ -58,7 +77,7 @@
             <span style="color: blue">{{ scope.row.cash }}</span>
           </template>
         </el-table-column>
-        <el-table-column align="center" prop="remark" label="备注" width="80">
+        <el-table-column align="center" prop="remark" label="货币类型" width="90">
         </el-table-column>
         <el-table-column
           align="center"
@@ -151,9 +170,9 @@ export default {
   },
   methods: {
      //发送网络请求到后台/api/profile获取所有数据 //设置分页数据
-    getfile() {
+   async getfile() {
   
-      this.$axios
+     await this.$axios
         .get("/api/profile/" + this.$store.getters.user.id)
         .then((res) => {
           if (res) {
@@ -168,11 +187,9 @@ export default {
 
     //设置分页的方法   //分页属性     //设置默认的分页数据
     setpaginations() {
-    
       this.paginations.total = this.allTableData.length;
       this.paginations.pageindex = 1;
       this.paginations.pagesize = 5;
-  
       this.tableData = this.allTableData.filter((item, index) => {
         return index < this.paginations.pagesize;
       });
@@ -247,6 +264,13 @@ export default {
     dateTurn(date) {
       return new Date(date).toLocaleString();
     },
+   async transformType(type){
+     await this.getfile()
+      console.log(type);
+      let all = this.allTableData
+      this.allTableData = all.filter(item=>{return item.remark === type})
+      this.setpaginations()
+    }
   },
 };
 </script>
@@ -262,8 +286,11 @@ export default {
   float: right;
   margin: 10px 30px 5px 0 !important;
 }
+.fundlist .btnleft {
+  padding: 10px 5px 5px 15px !important;
+}
 .fundlist .container .el-table {
-  height: 305px;
+  height: 405px;
   overflow: auto;
 }
 .fundlist .paginations {

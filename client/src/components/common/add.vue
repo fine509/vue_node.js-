@@ -25,8 +25,12 @@
             <el-input v-model="formData.expend" type='number'></el-input>
       </el-form-item>
     
-       <el-form-item prop='remark' label='备注：'>
-            <el-input v-model="formData.remark  " type='text'></el-input>
+       <el-form-item prop='remark' label='货币类型：'>
+          <el-select v-model="formData.remark" placeholder="货币类型">
+                <el-option  v-for="(item,index) in  moneyType" :key="index" 
+                :label='item' 
+                :value='item'>{{item}} </el-option>
+            </el-select>
       </el-form-item>
       </el-form>
 
@@ -52,6 +56,7 @@ export default {
       return {
         
          formtype:['娱乐','日常','医药','工资','其他','股票'],
+         moneyType:["人民币","美元","欧元"],
          rules:{
             
              incode:[{
