@@ -1,6 +1,5 @@
 const User = require('../../../modules/Users')
 module.exports = async(req, res) => {
-    console.log(req.params.id);
     await User.updateOne({ _id: req.params.id }, { name: req.body.name })
         .then(user => {
 

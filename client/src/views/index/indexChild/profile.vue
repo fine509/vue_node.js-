@@ -1,28 +1,39 @@
 <template>
   <div class="profile">
     <div class="left">
-      <div class="leftimg"><img :src="getuser.avatar" alt="" /></div>
+      <div class="leftimg">
+        <img :src="getuser.imgUrl" />
+        <button @click="changeImg">更换头像</button>
+        <div class="changImage" ref="allImg">
+          <main>
+            <img
+              v-for="item in imgUrl"
+              :key="item"
+              :src="item"
+              alt=""
+              @click="uploadImageSure(item)"
+            />
+          </main>
+        </div>
+      </div>
     </div>
     <div class="right">
-      <div class="username" style="font-size:1.6rem">
-       <i class="el-icon-user-solid"></i>
+      <div class="username" style="font-size: 1.6rem">
+        <i class="el-icon-user-solid"></i>
         {{ getuser.name }}
         <el-button size="small" @click="modifyname">修改名字</el-button>
         <el-button size="small" @click="modifypassword">修改密码</el-button>
-         <!-- <el-button size="small" @click="modifybao">修改密保</el-button> -->
-
-
-                <el-input rules='rules'
+        <!-- <el-button size="small" @click="modifybao">修改密保</el-button> -->
+        <el-input
+          rules="rules"
           v-if="isshow"
           placeholder="请输入修改的名字"
-     class="inputname"
+          class="inputname"
           size="small"
           v-model="modify.name"
         >
         </el-input>
-
-
-            <el-input
+        <el-input
           v-if="passwordshow"
           placeholder="请输入原来的密码"
           type="password"
@@ -30,14 +41,14 @@
           v-model="modify.password"
         >
         </el-input>
-
-
-
-            <el-input   v-if="passwordshow" placeholder="输入6-30位的密码" size="small"
-         v-model="modify.password1" show-password @blur="passwordBlur"></el-input>
-
-
-
+        <el-input
+          v-if="passwordshow"
+          placeholder="输入6-30位的密码"
+          size="small"
+          v-model="modify.password1"
+          show-password
+          @blur="passwordBlur"
+        ></el-input>
         <el-button
           size="small"
           @click="modifySure"
@@ -54,12 +65,10 @@
         >
         <el-row class="rowrow">
           <el-button
-
             size="small"
             @click="passwordSure"
             v-if="passwordBtn"
-            :class='{suremodify:ture, is6:isdisabled}'
-
+            :class="{ suremodify: ture, is6: isdisabled }"
             >确认修改</el-button
           >
           <el-button
@@ -70,10 +79,9 @@
             >取消修改</el-button
           >
         </el-row>
-
       </div>
 
-      <div class="usertype" style="font-size:1.6rem">
+      <div class="usertype" style="font-size: 1.6rem">
         <i class="el-icon-s-tools"></i>
         {{ ismanager }}
       </div>
@@ -89,10 +97,9 @@ export default {
     return {
       isshow: false,
       passwordshow: false,
-      passwordBtn:false,
-
-     isdisabled:true,
-
+      passwordBtn: false,
+      userid: this.$store.getters.user.id,
+      isdisabled: true,
       modify: {
         name: "",
         password: "",
@@ -109,41 +116,38 @@ export default {
         password1: "",
       },
       getuser: {},
-    //   rules: {
-
-    //     password: [
-    //       { required: true, message: "密码不能为空", trigger: "blur" },
-    //       { min: 6, max: 30, message: "长度在6-30之间", trigger: "blur" },
-    //     ],
-    //   },
+      uploadImage: "/123",
+      imgUrl: [
+        "https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1957484342,3705307387&fm=26&gp=0.jpg",
+        "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3710762057,1525153242&fm=26&gp=0.jpg",
+        "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=35162277,2426898147&fm=26&gp=0.jpg",
+        "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=283284588,2796778480&fm=26&gp=0.jpg",
+        "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3673090473,156438625&fm=26&gp=0.jpg",
+      ],
     };
   },
   created() {
     //一开始就获取数据并赋值渲染
     this.getuserr();
   },
+
   computed: {
     ismanager() {
       return this.getuser.identity === "manager" ? "管理员" : "用户";
     },
   },
   methods: {
-
     modifyname() {
       this.isshow = true;
       this.passwordshow = false;
-      this. passwordBtn=false;
-
+      this.passwordBtn = false;
     },
     modifySure() {
       this.isshow = false;
       this.dataName = this.modify;
       //通过用户id修改名字
       this.$axios
-        .post(
-          "/api/users/edit/" + this.$store.getters.user.id,
-          qs.stringify(this.dataName)
-        )
+        .post("/api/users/edit/" + this.userid, qs.stringify(this.dataName))
         .then((res) => {
           this.$message({
             type: "success",
@@ -154,37 +158,31 @@ export default {
       //修改成功重新获取数据，将数据赋给getuser重新渲染
       this.getuserr();
       //通过事件总线通知HeadNav去修改名字
-   
+
       this.$bus.$emit("nameModify");
     },
     getuserr() {
-      this.$axios
-        .get("/api/users/current/" + this.$store.getters.user.id)
-        .then((res) => {
-         
-          this.getuser = res.data;
-          this.$store.commit('modify_User',res.data.name)
-        });
+      this.$axios.get("/api/users/current/" + this.userid).then((res) => {
+        this.getuser = res.data;
+        this.$store.commit("modify_User", res.data.name);
+      });
     },
     modifyEnd() {
       this.isshow = false;
       this.passwordshow = false;
-      this. passwordBtn=false;
+      this.passwordBtn = false;
     },
     modifypassword() {
       this.passwordshow = true;
-      this. passwordBtn=true;
+      this.passwordBtn = true;
       this.isshow = false;
-
-
-
     },
     passwordSure() {
       this.dataName = this.modify;
 
       this.$axios
         .post(
-          "/api/users/editpassword/" + this.$store.getters.user.id,
+          "/api/users/editpassword/" + this.userid,
           qs.stringify(this.dataName)
         )
         .then((res) => {
@@ -200,32 +198,49 @@ export default {
           console.log(err);
         });
     },
-    passwordBlur(){
-        if(this.modify.password1.length<6 || this.modify.password1.length>30){
-
-             this.isdisabled=true
-             this.$message({
-               type:'warning',
-               message:'密码必须在6-30位以内'
-
-             })
-        }
-        else {
-            this.passwordBtn=true;
-
-            this.isdisabled=false
-
-        }
-    }
+    passwordBlur() {
+      if (
+        this.modify.password1.length < 6 ||
+        this.modify.password1.length > 30
+      ) {
+        this.isdisabled = true;
+        this.$message({
+          type: "warning",
+          message: "密码必须在6-30位以内",
+        });
+      } else {
+        this.passwordBtn = true;
+        this.isdisabled = false;
+      }
+    },
+    changeImg() {
+      this.$refs.allImg.style.display = "block";
+    },
+    uploadImageSure(item) {
+      this.$refs.allImg.style.display = "none";
+      this.$axios
+        .post(
+          `/api/users/changeImage/${this.userid}`,
+          qs.stringify({
+            data: item,
+          })
+        )
+        .then((res) => {
+          this.$message({ type: "success", message: res.data });
+          this.getuserr();
+        })
+        .catch((err) => {
+          this.$message({ type: "warning", message: res.data });
+        });
+    },
   },
 };
 </script>
 
-<style  scoped>
+<style scoped lang="scss">
 .profile {
   width: 100%;
-  height:100%;
-
+  height: 100%;
 }
 
 .profile .left {
@@ -235,11 +250,11 @@ export default {
 }
 .profile .left .leftimg {
   margin-top: 73%;
-  margin-left: 58%;
+  margin-left: 42%;
 }
 .profile .left img {
-  width: 60px;
-  height: 60px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
 }
 .profile .right {
@@ -247,7 +262,6 @@ export default {
   width: 60%;
   height: 100%;
   background-color: #ecebec;
-
 }
 .profile .right div {
   width: 200px;
@@ -259,7 +273,6 @@ export default {
   margin-top: 32%;
   transform: translateY(-40%);
 }
-
 
 .inputname {
   display: inline-block !important;
@@ -273,14 +286,30 @@ export default {
   margin-top: 10px;
   margin-left: 494px !important;
 }
-.profile .is6{
- /* cursor: not-allowed; */
-/* //设置蒙版效果k */
-    opacity:0.5;
-/* //禁止鼠标事件 */
-  pointer-events:none;
+.profile .is6 {
+  /* cursor: not-allowed; */
+  /* //设置蒙版效果k */
+  opacity: 0.5;
+  /* //禁止鼠标事件 */
+  pointer-events: none;
 }
 .profile i {
   font-size: 2rem;
+}
+.changImage {
+  display: none;
+  position: fixed;
+  top: 0%;
+  left: 0%;
+  width: 100%;
+  height: 100%;
+  padding-top: 10%;
+  padding-left: 24%;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 9;
+  img {
+    margin: 0 20px;
+    cursor: pointer;
+  }
 }
 </style>

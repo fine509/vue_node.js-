@@ -21,7 +21,6 @@ module.exports = async(req, res) => {
                     color: req.body.color,
                     fruit: req.body.fruit
                 })
-                console.log(newUser);
 
                 //密码加密
                 bcrypt.genSalt(10, function(err, salt) { //获取加密模式并传给hash()

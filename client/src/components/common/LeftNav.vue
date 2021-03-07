@@ -99,13 +99,16 @@ export default {
 }
 </script>
 
-<style>
+<style lang='scss'>
 .leftnav {
     float: left;
     height: 100%;
     width:15%;
     background-color:#151517;
     overflow: auto;
+   .el-menu-vertical-demo {
+       border-right-color: #000;
+   }
 }
 
 

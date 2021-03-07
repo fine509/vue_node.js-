@@ -20,6 +20,7 @@ const editUser = require('./api_router/users/editUser')
 const editPassword = require('./api_router/users/editPassword')
 const editMibao = require('./api_router/users/editMibao')
 const findpw = require('./api_router/users/findpw')
+const getimage = require('./api_router/users/image')
     //设置二级路由 
 
 //POST api/users/register Pubblic
@@ -50,6 +51,9 @@ users.post('/editpassword/:id', passpost.authenticate('jwt', { session: false })
 ///POST api/users/edit/:id 修改用户密保
 users.post('/editmibao/:id', passpost.authenticate('jwt', { session: false }), editMibao)
 
+//post
+users.post('/uploadImage/:id', passpost.authenticate('jwt', { session: false }), getimage)
 
-
+//post改变用户头像
+users.post('/changeImage/:id', passpost.authenticate('jwt', { session: false }), getimage)
 module.exports = users;

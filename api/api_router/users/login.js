@@ -4,7 +4,6 @@ const { keys } = require('../../../config/key')
 const User = require('../../../modules/Users') //User集合
 module.exports = async(req, res) => {
     const email = req.body.email;
-
     const password = req.body.password;
     //查询
     await User.findOne({ email })

@@ -46,7 +46,7 @@ axios.interceptors.response.use(
 
             localStorage.removeItem("logintoken")
             router.push('/login')
-            Message.error('token失效，请重新登陆');
+            Message.error('登录已过期，请重新登录');
 
             // this.$router.push('/login') 不是vue文件里面，不能用，得引入
 
