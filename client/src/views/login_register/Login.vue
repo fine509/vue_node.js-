@@ -92,7 +92,6 @@ export default {
   },
   methods: {
     register(){
-      console.log('123');
       this.$router.push('/register')
     },
     find(){

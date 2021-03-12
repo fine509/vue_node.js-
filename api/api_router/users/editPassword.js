@@ -9,8 +9,6 @@ module.exports = AAA = async(req, res) => {
             //密码匹配
             bcrypt.compare(req.body.password, user.password, (err, result) => {
                 if (result) {
-
-
                     //密码加密
                     bcrypt.genSalt(10, function(err, salt) { //获取加密模式并传给hash()
                         bcrypt.hash(req.body.password1, salt, function(err, hash) {
@@ -29,6 +27,5 @@ module.exports = AAA = async(req, res) => {
             })
 
         }).catch(err => res.json(err))
-    console.log(newpassword);
 
 }

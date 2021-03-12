@@ -61,13 +61,15 @@ export default {
         .get("/api/users/current/" + this.$store.getters.user.id)
         .then((res) => {
           this.getuser = res.data;
-          console.log(this.getuser);
         });
     },
   },
   mounted() {
     //修改名字
     this.$bus.$on("nameModify", (res) => {
+      this.getuserr();
+    });
+    this.$bus.$on("changeImage", (res) => {
       this.getuserr();
     });
   },
@@ -106,15 +108,15 @@ export default {
 .userinfo {
   text-align: center;
   margin-right: 20px;
-  margin-top: 20px;
+  margin-top: 17px;
   margin-bottom: 10px;
 }
 .userinfo img {
   position: absolute;
-  right: 70px;
-  top: 18px;
-  width: 35px;
-  height: 35px;
+  right: 80px;
+  top: 15px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
 }
 .userinfo div:nth-of-type(1) {

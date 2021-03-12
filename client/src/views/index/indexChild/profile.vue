@@ -3,7 +3,7 @@
     <div class="left">
       <div class="leftimg">
         <img :src="getuser.imgUrl" />
-        <button @click="changeImg">更换头像</button>
+        <button class="btnchangeImage" @click="changeImg">更换头像</button>
         <div class="changImage" ref="allImg">
           <main>
             <img
@@ -123,6 +123,7 @@ export default {
         "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=35162277,2426898147&fm=26&gp=0.jpg",
         "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=283284588,2796778480&fm=26&gp=0.jpg",
         "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3673090473,156438625&fm=26&gp=0.jpg",
+        "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201508%2F04%2F20150804155805_KSQNi.jpeg&refer=http%3A%2F%2Fb-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1617701837&t=63ef8e9c2d64f6e1c1ca420c4cfacdd3",
       ],
     };
   },
@@ -228,6 +229,7 @@ export default {
         .then((res) => {
           this.$message({ type: "success", message: res.data });
           this.getuserr();
+          this.$bus.$emit("changeImage");
         })
         .catch((err) => {
           this.$message({ type: "warning", message: res.data });
@@ -304,12 +306,20 @@ export default {
   width: 100%;
   height: 100%;
   padding-top: 10%;
-  padding-left: 24%;
+  padding-left: 19%;
   background-color: rgba(0, 0, 0, 0.4);
   z-index: 9;
   img {
     margin: 0 20px;
     cursor: pointer;
   }
+}
+.btnchangeImage {
+  outline: none;
+  background-color: rgb(199, 199, 230);
+  border-radius: 4px;
+  border: 0;
+  margin-top: 10px;
+  margin-left: 17px;
 }
 </style>

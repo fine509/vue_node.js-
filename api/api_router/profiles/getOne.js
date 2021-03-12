@@ -1,7 +1,6 @@
 const Profile = require('../../../modules/Profile') //profiles集合
 
 module.exports = async(req, res) => {
-    console.log(req.params.id);
     await Profile.findOne({ _id: req.params.id })
         .then(profile => {
             if (!profile) {

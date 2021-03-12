@@ -1,162 +1,162 @@
 <template>
   <div class="analyse">
     <div class="charts">
-      <div ref="mycharts1" class="charts1">1</div>
-      <div ref="mycharts2" class="charts2">2</div>
+      <div ref="mycharts1" class="charts1"></div>
+      <div ref="mycharts2" class="charts2"></div>
     </div>
-    <div class="charts">
-      <div ref="mycharts3" class="charts1">3</div>
-      <div ref="mycharts4" class="charts2">4</div>
-    </div>
-    <div class="charts">
-      <div ref="mycharts5" class="charts1"></div>
-      <div ref="mycharts6" class="charts2"></div>
-    </div>
+    <aside class="checkouType">
+      <button class="checkoutType-btn-1" @click="checkoutType(cashType.income)">
+        收入</button
+      ><button
+        class="checkoutType-btn-2"
+        @click="checkoutType(cashType.expenditure)"
+      >
+        支出
+      </button>
+    </aside>
   </div>
 </template>
 
 <script>
-import LoginVue from '../../login_register/Login.vue'
+import LoginVue from "../../login_register/Login.vue";
 
-let echarts = require('echarts')
+let echarts = require("echarts");
+
 export default {
-    name:'Analyse',
-    data:()=>{
-        return{
-            data:[],
-            winData:[],
-            failData:[],
-            failType:[],
-            failCount:[],
-            ZH_money:[],
-            OU_money:[],
-            AM_money:[],
-            successType:[],
-            failTypeA:[],
-            successTypeA:[],
-             failTypeZ:[],
-            successTypeZ:[],
-             failTypeO:[],
-            successTypeO:[],
-            failData_z:[],
-            successData_z:[],
-             failData_a:[],
-            successData_a:[],
-             failData_o:[],
-            successData_o:[],
-
-        }
-    },
- async activated(){
-    await this.getMessage()
-     this.handleType(this.data)
-  },
-   async mounted(){
-       await this.getMessage()  //异步请求变同步
-        await this.handleType(this.data)
-        this.handleData(this.ZH_money,this.failTypeZ,'人民币支出')
-        this.handleData(this.ZH_money,this.successTypeZ,'人民币收入')
-        this.handleData(this.AM_money,this.failTypeA,'美元支出')
-        this.handleData(this.AM_money,this.successTypeA,'美元收入')
-        this.handleData(this.OU_money,this.failTypeO,'欧元支出')
-        this.handleData(this.OU_money,this.successTypeO,'欧元收入')
-        console.log(this.successData_z)
-        this.getCharts(this.$refs.mycharts1,this.successTypeZ,'人民币收入',this.successData_z)
-        this.getCharts(this.$refs.mycharts2,this.failTypeZ,'人民币支出',this.failData_z)
-        console.log(this.successData_a);
-        this.getCharts(this.$refs.mycharts3,this.successTypeA,'美元收入',this.successData_a)
-        this.getCharts(this.$refs.mycharts4,this.failTypeA,'美元支出',this.failData_a)
-        this.getCharts(this.$refs.mycharts5,this.successTypeO,'欧元收入',this.successData_o)
-        this.getCharts(this.$refs.mycharts6,this.failTypeO,'欧元支出',this.failData_o)
-        
-    },
-    methods:{
-       handleData(arr,type,data){
-        let c=0,d=0;
-           for(let item of type){
-               for(let value of arr){
-                   if(value.type===item ){
-                     if(!value.cash.startsWith('-')){
-                       c=(c-0)+(value.expend-0)+(value.incode-0)
-                   }
-                   else {
-                       d=(d)+(value.expend-0)+(value.incode-0)
-                   }
-                   }
-               }
-               switch(data) {
-                   case '人民币支出' : this.failData_z.push(d);break;
-                   case '人民币收入' : this.successData_z.push(c);break;
-                   case '美元支出' : this.failData_a.push(d);break;
-                   case '美元收入' : this.successData_a.push(c);break;
-                   case '欧元支出' : this.failData_o.push(d);break;
-                   case '欧元收入' : this.successData_o.push(c);break;
-                   default:
-               }
-               c=0
-               d=0
-           }
-       },
-       async getMessage(){
-          await this.$axios.get("/api/profile/" + this.$store.getters.user.id)
-              .then(res=>{this.data=res.data})
-        },
-       handleType(data){
-           this.ZH_money = data.filter(item=>{return item.remark === '人民币'})
-           this.AM_money = data.filter(item=>{return item.remark === '美元'})
-           this.OU_money = data.filter(item=>{return item.remark === '欧元'})
-           this.failTypeZ = Array.from(new Set(this.ZH_money.map(item=>{if(item['cash'].startsWith('-') && item.type!=""){return item.type}}).filter(item=>{return item})))
-           this.successTypeZ = Array.from(new Set(this.ZH_money.map(item=>{if(!item['cash'].startsWith('-') && item.type!=""){return item.type}}).filter(item=>{return item})))
-           this.failTypeA = Array.from(new Set(this.AM_money.map(item=>{if(item['cash'].startsWith('-') && item.type!=""){return item.type}}).filter(item=>{return item})))
-           this.successTypeA = Array.from(new Set(this.AM_money.map(item=>{if(!item['cash'].startsWith('-') && item.type!=""){return item.type}}).filter(item=>{return item})))
-           this.failTypeO = Array.from(new Set(this.OU_money.map(item=>{if(item['cash'].startsWith('-') && item.type!=""){return item.type}}).filter(item=>{return item})))
-           this.successTypeO = Array.from(new Set(this.OU_money.map(item=>{if(!item['cash'].startsWith('-') && item.type!=""){return item.type}}).filter(item=>{return item})))
-
+  name: "Analyse",
+  data: () => {
+    return {
+      data: [],
+      cashType: {
+        income: "收入",
+        expenditure: "支出",
       },
-        getCharts(dom,type,moneyType,data){
-        let myChart = echarts.init(dom);
-        // 绘制图表
-        myChart.setOption({
-            title: {
-                text: moneyType
-            },
-            tooltip: {},
-            xAxis: {
-                data:type
-            },
-            yAxis: {},
-            series: [{
-                type: 'bar',
-                data
-            }]
+      showData: [],
+    };
+  },
+  async activated() {
+    await this.getMessage();
+  },
+  async mounted() {
+    await this.getMessage(); //异步请求变同步
+  },
+  methods: {
+    async getMessage() {
+      await this.$axios
+        .get("/api/profile/" + this.$store.getters.user.id)
+        .then((res) => {
+          this.data = res.data.map((item) => {
+            if (Number(item.cash) < 0) {
+              item.money = this.cashType.expenditure;
+            } else {
+              item.money = this.cashType.income;
+            }
+            return item;
+          });
         });
-            
-
+      this.showData = this.handleData(
+        this.data,
+        "人民币",
+        this.cashType.income
+      );
+    },
+    handleData(data, remark, type) {
+      //处理每种货币的类型
+      let handleData = [];
+      data.forEach((item) => {
+        if (item.remark === remark) {
+          if (item.money === type) {
+            handleData.push(item.type);
+          }
         }
-    }
-
-}
+      });
+      handleData = Array.from(new Set(handleData));
+      return handleData;
+    },
+    checkoutType(type) {
+      this.showData = this.handleData(this.data, "人民币", type);
+    },
+    getCharts(dom, data) {
+      let myChart = echarts.init(dom);
+      // 绘制图表
+      myChart.setOption({
+        title: {
+          text: "资金数据统计",
+        },
+        tooltip: {},
+        xAxis: {
+          data,
+        },
+        yAxis: {},
+        series: [
+          {
+            name: "销量",
+            type: "bar",
+            data: [5, 20, 36, 10, 10, 20],
+          },
+        ],
+      });
+    },
+    getPieCharts(dom, data) {
+      let myChart = echarts.init(dom);
+      // 绘制图表
+      myChart.setOption({
+        series: [
+          {
+            name: "访问来源",
+            type: "pie",
+            radius: "55%",
+            data: [
+              { value: 235, name: "视频广告" },
+              { value: 274, name: "联盟广告" },
+              { value: 310, name: "邮件营销" },
+              { value: 335, name: "直接访问" },
+              { value: 400, name: "搜索引擎" },
+            ],
+          },
+        ],
+      });
+    },
+  },
+  watch: {
+    showData(newValue, oldValue) {
+      this.getCharts(this.$refs.mycharts1, newValue);
+      this.getPieCharts(this.$refs.mycharts2, newValue);
+    },
+  },
+};
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .analyse {
   width: 84%;
   margin-left: 16%;
   height: 100%;
-  display: flex;
   /* //box-sizing: border-box; */
 }
 .charts {
-  flex: 1 0 0;
-  margin-top: 30px;
+  float: left;
+  margin: 180px 0 0 200px;
 }
 .charts1 {
-  width: 320px;
+  float: left;
+  width: 330px;
   height: 220px;
-  margin-bottom: 40px;
 }
 .charts2 {
-  width: 320px;
+  float: left;
+  width: 330px;
   height: 220px;
+  margin-top: -20px;
+}
+.checkouType {
+  padding: 50px 0 0 0;
+  .checkoutType-btn-1 {
+    border: 1px solid #999;
+    border-right-color: #000;
+  }
+  .checkoutType-btn-2 {
+    border: 1px solid #999;
+  }
 }
 </style>

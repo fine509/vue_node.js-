@@ -55,7 +55,6 @@ export default {
                 let incode=0,expend=0,cash=0;
                 this.allMesage=res.data
                 this.filterMessage=res.data
-                console.log( this.filterMessage );
                 for(let item of this.filterMessage) {
                  incode+=(item.incode-0)
                  expend+=(item.expend-0)
@@ -65,7 +64,6 @@ export default {
                  this.allMessage.incode=incode;
                  this.allMessage.expend=expend;
                  this.allMessage.cash=cash
-                console.log(this.allMessage);                 
             })
             
         },

@@ -38,16 +38,15 @@ export default {
   },
   methods: {
     getuser() {
-      this.$axios
-        .get(`/api/users/current/${this.$store.getters.user.id}`)
-        .then((user) => {
-          if (!user?.data?.color && !user?.data?.fruit) {
-            this.$message({
-              message: "请尽快去添加密保，以完善用户信息",
-              type: "warning",
-            });
-          }
-        });
+      const { email } = this.$store.getters.user;
+      this.$axios.get(`/api/users/getencrypted/${email}`).then((res) => {
+        if (!res?.data?.question1 && !res?.data?.question2) {
+          this.$message({
+            message: "请尽快去添加密保，以完善用户信息",
+            type: "warning",
+          });
+        }
+      });
     },
     getTime() {
       const time = new Date();

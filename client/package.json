@@ -20,7 +20,6 @@
     "@vue/cli-service": "~4.5.0",
     "bootstrap": "^4.5.3",
     "jquery": "^3.5.1",
-    "node-sass": "^4.14.1",
     "popper.js": "^1.16.1",
     "sass-loader": "^10.0.1",
     "sass-resources-loader": "^2.1.1",

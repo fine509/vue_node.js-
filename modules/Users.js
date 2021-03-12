@@ -43,6 +43,4 @@ const UserSchema = new mongoose.Schema({
 
 //创集合
 const User = mongoose.model("users", UserSchema);
-console.log(123123);
-console.log(4444);
 module.exports = User;

@@ -9,18 +9,15 @@ import qs from "qs";
 import jwtDecode from "jwt-decode";
 export default {
   name: "App",
-  created(){
+  created() {
     //判断token是否有,有的话放入vuex里面，解决刷新vuex更新问题
-    if(localStorage.logintoken){
-   
-       const token_decode = jwtDecode(localStorage.logintoken);    //解析token
-       this.$store.dispatch("setAu", !this.isEmpty(token_decode));
-       this.$store.dispatch("setUser", token_decode);
+    if (localStorage.logintoken) {
+      const token_decode = jwtDecode(localStorage.logintoken); //解析token
+      this.$store.dispatch("setAu", !this.isEmpty(token_decode));
+      this.$store.dispatch("setUser", token_decode);
     }
-
   },
   methods: {
- 
     //判断一个对象是否为空,为空返回真
     isEmpty(value) {
       return (

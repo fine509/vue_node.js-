@@ -49,7 +49,7 @@ export default {
               },
               {
                   path:'/index/analyse',
-                  name:'数据分析'
+                  name:'数据统计'
               }
               ]
           },

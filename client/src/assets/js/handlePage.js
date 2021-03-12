@@ -21,7 +21,6 @@ export const HandlePage = {
         },
         //设置每页显示多少条
         handleSizeChange(val) {
-            console.log(val);
             this.pages.page_size = val;
             this.filters = this.alls.filter((item, index) => {
                 return index < this.pages.page_size

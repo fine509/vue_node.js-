@@ -1,6 +1,5 @@
 <template>
   <div class="find">
-    
     <section class="from-contain">
       <div class="form-tip">
         <span class="title"> 资金管理系统 </span>
@@ -14,34 +13,35 @@
         >
           <el-form-item label="邮箱" prop="email">
             <el-input
-            class="input1"
+              class="input1"
               type="email"
               v-model="findUser.email"
               placeholder="请输入邮箱"
+              @blur="getQuestion"
             ></el-input>
           </el-form-item>
           <el-form-item label="新的密码" prop="password">
             <el-input
-               class="input1"
+              class="input1"
               type="password"
               v-model="findUser.password"
               placeholder="请输入新的密码"
             ></el-input>
           </el-form-item>
-          <el-form-item label="密保问题" prop="color">
-            <el-input
-               class="input1"
-              type="text"
-              v-model="findUser.color"
-              placeholder="请输入你喜欢的颜色"
-            ></el-input>
-          </el-form-item>
-          <el-form-item label="密保问题" prop="fruit" class="mibao1">
+          <el-form-item label="密保问题" prop="answer1">
             <el-input
               class="input1"
               type="text"
-              v-model="findUser.fruit"
-              placeholder="请输入你喜欢的水果"
+              v-model="findUser.answer1"
+              :placeholder="question1"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="密保问题" prop="fruit" class="answer2">
+            <el-input
+              class="input1"
+              type="text"
+              v-model="findUser.answer2"
+              :placeholder="question2"
             ></el-input>
           </el-form-item>
 
@@ -52,14 +52,10 @@
               @click="submitForm('findForm')"
               >找回</el-button
             >
-            <el-button
-              type="primary"
-             class="btn1"
-              @click="login"
+            <el-button type="primary" class="btn1" @click="login"
               >登录</el-button
             >
           </el-form-item>
-          
         </el-form>
       </div>
     </section>
@@ -75,10 +71,12 @@ export default {
     return {
       findUser: {
         email: "",
-        color: "",
-        fruit: "",
+        answer1: "",
+        answer2: "",
         password: "",
       },
+      question1: "请输入邮箱获取你的密保问题1",
+      question2: "请输入邮箱获取你的密保问题2",
       loading: true,
       //验证规则
       rules: {
@@ -97,6 +95,7 @@ export default {
       },
     };
   },
+  //getencrypted/email
   methods: {
     submitForm(Form) {
       this.$refs[Form].validate((valid) => {
@@ -129,9 +128,18 @@ export default {
         (typeof value === "Array" && value.length === 0)
       );
     },
-    login(){
-      this.$router.push('/login')
-    }
+    login() {
+      this.$router.push("/login");
+    },
+    getQuestion(e) {
+      this.$axios
+        .get(`/api/users/getencrypted/${e.target.value}`)
+        .then((res) => {
+          let { question1, question2 } = res.data;
+          this.question2 = question2;
+          this.question1 = question1;
+        });
+    },
   },
 };
 </script>
@@ -154,17 +162,17 @@ export default {
 .find .from-contain .title {
   font-weight: bold;
   font-size: 26px;
- color:rgb(100, 99, 99);
+  color: rgb(100, 99, 99);
   margin-left: 125px;
 }
 .find .el-form-item {
-  margin-bottom: 18px!important;
+  margin-bottom: 18px !important;
 }
 .find .findForm {
   width: 100%;
   margin-top: 20px;
-   background-color: rgb(245, 247, 247);
-   border-radius: 3%;
+  background-color: rgb(245, 247, 247);
+  border-radius: 3%;
   padding-right: 10px;
   padding-top: 20px;
 }
@@ -182,10 +190,9 @@ export default {
   font-size: 12px;
 }
 .find .mibao1 {
-  margin-bottom: 10px!important;
+  margin-bottom: 10px !important;
 }
 .find .btn1 {
- 
   margin-bottom: 1rem;
 }
 </style>

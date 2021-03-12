@@ -14,15 +14,12 @@ owe.get("/findall/:id", passpost.authenticate('jwt', { session: false }), async(
     })
     //POST api/owe/add
 owe.post("/add", passpost.authenticate('jwt', { session: false }), async(req, res) => {
-    console.log(req.body);
     const newOwe = req.body;
-    console.log(newOwe);
     await new Owe(newOwe).save().then(result => res.json('添加成功')).catch(err => res.json('添加失败'))
 })
 
 //POST api/stroage/edit
 owe.post("/edit/:id", passpost.authenticate('jwt', { session: false }), async(req, res) => {
-        console.log(req.body);
         //查找并修改数据库
         await Owe.updateOne({ _id: req.params.id }, { name: req.body.name, cash: req.body.cash, desc: req.body.desc })
             .then(owe => {

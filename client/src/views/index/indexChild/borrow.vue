@@ -138,8 +138,6 @@ export default {
      await this.$axios
         .get(`/api/borrow/findall/${this.$store.getters.user.id}`)
         .then((res) => {
-          console.log('1');
-      
           this.alls = res.data;
           this.alls1 = res.data
           this.pages.total = this.alls.length;

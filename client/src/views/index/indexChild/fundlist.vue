@@ -266,7 +266,6 @@ export default {
     },
    async transformType(type){
      await this.getfile()
-      console.log(type);
       let all = this.allTableData
       this.allTableData = all.filter(item=>{return item.remark === type})
       this.setpaginations()
